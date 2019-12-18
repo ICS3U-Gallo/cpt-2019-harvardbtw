@@ -1,8 +1,14 @@
 Story: Zombie Apocalypse
+
 Minigame: - Find a cure, you have been bitten and you need to find ingredients for a cure. 
           - Search around the hospital for ingredients
           - You die if you run out of time or get bit by a zombie
           - To win, you have to find all the ingredients and make it in a lab
+          
+Gameplay: - WASD to move 
+          - E to pick up items
+          - I to access inventory
+          - C to craft
           
 
 
