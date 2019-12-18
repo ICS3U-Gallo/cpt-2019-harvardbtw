@@ -4,6 +4,7 @@ import settings
 
 from menu import MenuView
 from chapter_1 import Chapter1View
+from chapter_3 import Chapter3View
 
 
 class Director(arcade.Window):
