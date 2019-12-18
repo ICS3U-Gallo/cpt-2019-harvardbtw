@@ -1,2 +1,4 @@
 Story: Zombie Apocalypse
-Minigame: Working through a series of events in which the user must select their choice to either victory or defeat. Choose your adventure.
+Minigame: Player runs away from zombies and dodges them along the way.
+Features:
+1. Player uses arrow keys to dodge zombies. More zombies spawn as the game progresses. After the player has successfully dodged all zombies for 30 seconds. 
