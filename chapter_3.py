@@ -5,8 +5,8 @@ import os
 import settings
 
 
-WIDTH = 1000
-HEIGHT = 700
+WIDTH = 800
+HEIGHT = 600
 
 
 class Chapter3View(arcade.View):
@@ -21,7 +21,7 @@ class Chapter3View(arcade.View):
         self.player = arcade.Sprite(center_x=WIDTH/2, center_y=0)
         self.player.texture = arcade.make_soft_circle_texture(100, arcade.color.ASH_GREY, outer_alpha=255)
 # Base
-        self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-475)
+        self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
 # Gun
         self.gun = arcade.Sprite(center_x=WIDTH/2, center_y=0)
@@ -33,6 +33,14 @@ class Chapter3View(arcade.View):
         self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
         self.enemies = arcade.SpriteList()
 
+        for _ in range(10):
+            enemy = arcade.Sprite()
+            enemy.center_x = random.randrange(0, WIDTH)
+            enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
+            enemy.change_y = -3
+            enemy.texture = self.enemy_texture
+            self.enemies.append(enemy)
+        
 # Bullet
         self.bullet_texture = arcade.make_soft_square_texture(10, arcade.color.ORANGE, outer_alpha=255)
         self.bullets = arcade.SpriteList()
@@ -56,9 +64,9 @@ class Chapter3View(arcade.View):
 
         if seconds == 0:
             finish = True
-        if finish == True:
+        if finish is True:
             self.director.next_view()
-        if finish == False:
+        if finish is False:
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
 
     def update(self, delta_time):
@@ -72,6 +80,13 @@ class Chapter3View(arcade.View):
             self.total_time -= delta_time
 
 # Update Bullet
+
+        for enemy in self.enemies:
+            bullets_in_contact = enemy.collides_with_list(self.bullets)
+            if bullets_in_contact:
+                enemy.kill()
+                for bullet in bullets_in_contact:
+                    bullet.kill()
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
