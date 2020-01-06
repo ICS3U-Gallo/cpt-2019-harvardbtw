@@ -1,11 +1,7 @@
 import math
 import random
-
+import settings
 import arcade
-
-
-WIDTH = 640
-HEIGHT = 480
 
 
 class Sprite:
@@ -24,10 +20,10 @@ class Sprite:
         self.x += self.x_speed
         self.y += self.y_speed
 
-        if self.x > WIDTH or self.x < 0:
+        if self.x > settings.WIDTH or self.x < 0:
             self.x_speed = -self.x_speed
 
-        if self.y > HEIGHT or self.y < 0:
+        if self.y > settings.HEIGHT or self.y < 0:
             self.y_speed = -self.y_speed
 
 
@@ -46,8 +42,8 @@ class MyGame(arcade.Window):
         self.sprites = []
 
         for _ in range(5):
-            x = random.randrange(WIDTH)
-            y = random.randrange(HEIGHT)
+            x = random.randrange(settings.WIDTH)
+            y = random.randrange(settings.HEIGHT)
             dx = random.randrange(-5, 5)
             dy = random.randrange(-5, 5)
 
@@ -98,5 +94,5 @@ class MyGame(arcade.Window):
 
 
 if __name__ == '__main__':
-    window = MyGame(WIDTH, HEIGHT, "My Arcade Game")
+    window = MyGame(settings.WIDTH, settings.HEIGHT, "My Arcade Game")
     arcade.run()
