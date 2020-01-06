@@ -2,17 +2,18 @@ import arcade
 import random
 import math
 import os
+import settings
+
 
 WIDTH = 1000
 HEIGHT = 700
 
-class MyGame(arcade.Window):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+
+class Chapter3View(arcade.View):
+    def on_show(self):
         global finish, bullet_speed
 
         arcade.set_background_color(arcade.color.BLACK)
-        self.set_mouse_visible(False)
         self.total_time = 31.0
         finish = False
 
@@ -32,13 +33,6 @@ class MyGame(arcade.Window):
         self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
         self.enemies = arcade.SpriteList()
 
-        for _ in range(10):
-            enemy = arcade.Sprite()
-            enemy.center_x = random.randrange(0, WIDTH)
-            enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
-            enemy.change_y = -3
-            enemy.texture = self.enemy_texture
-            self.enemies.append(enemy)
 # Bullet
         self.bullet_texture = arcade.make_soft_square_texture(10, arcade.color.ORANGE, outer_alpha=255)
         self.bullets = arcade.SpriteList()
@@ -63,7 +57,7 @@ class MyGame(arcade.Window):
         if seconds == 0:
             finish = True
         if finish == True:
-            arcade.draw_text("Mission Complete", 10, HEIGHT-40, arcade.color.WHITE, 30)
+            self.director.next_view()
         if finish == False:
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
 
@@ -78,16 +72,6 @@ class MyGame(arcade.Window):
             self.total_time -= delta_time
 
 # Update Bullet
-        for bullet in self.bullets:
-            bullet_kill = arcade.check_for_collision_with_list(bullet, self.enemies)
-            if len(bullet_kill) > 0:
-                bullet.kill()
-
-        for enemy in self.enemies:
-            enemy_kill = arcade.check_for_collision_with_list(enemy, self.bullets)
-            if len(enemy_kill) > 0:
-                enemy.kill()
-
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
@@ -99,7 +83,6 @@ class MyGame(arcade.Window):
         y_diff = y - self.gun.center_y
         angle = math.atan2(y_diff, x_diff)
         self.gun.angle = math.degrees(angle)
-
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         global bullet_speed
@@ -118,10 +101,18 @@ class MyGame(arcade.Window):
         bullet.change_y = math.sin(angle) * bullet_speed
         self.bullets.append(bullet)
 
-def main():
-    game = MyGame(WIDTH, HEIGHT, "My Game")
-    arcade.run()
-
 
 if __name__ == "__main__":
-    main()
+    """This section of code will allow you to run your View
+    independently from the main.py file and its Director.
+    You can ignore this whole section. Keep it at the bottom
+    of your code.
+    It is advised you do not modify it unless you really know
+    what you are doing.
+    """
+    from utils import FakeDirector
+    window = arcade.Window(settings.WIDTH, settings.HEIGHT)
+    my_view = Chapter3View()
+    my_view.director = FakeDirector(close_on_next_view=True)
+    window.show_view(my_view)
+    arcade.run()
