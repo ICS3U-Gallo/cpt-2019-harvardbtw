@@ -32,8 +32,8 @@ class MyGame(arcade.Window):
         super().__init__(width, height, title)
         arcade.set_background_color(arcade.color.WHITE)
         self.sprite1 = arcade.Sprite(center_x=100, center_y=200)
-        self.sprite1.change_x = 0
-        self.sprite1.change_y = 0
+        # self.sprite1.change_x = 0
+        # self.sprite1.change_y = 0
         self.sprite1.texture = arcade.make_soft_square_texture(50,
                                                                arcade.color.BLACK,
                                                                outer_alpha=255)
@@ -52,6 +52,10 @@ class MyGame(arcade.Window):
 
     def update(self, delta_time):
         self.sprite1.update()
+        # if self.sprite1.center_x > settings.WIDTH or self.sprite1.center_x < 0:
+        #     self.sprite1.change_x = 0
+        # if self.sprite1.center_y > settings.HEIGHT or self.sprite1.center_y < 0:
+        #     self.sprite1.change_y = 0
         self.sprite1.center_x += self.sprite1.change_x
         self.sprite1.center_y += self.sprite1.change_y
         for s in self.sprites:
@@ -66,19 +70,23 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.D:
-            self.sprite1.change_x = 2.5
+            self.sprite1.change_x = 5
 
         if key == arcade.key.A:
-            self.sprite1.change_x = -2.5
+            self.sprite1.change_x = -5
 
         if key == arcade.key.W:
-            self.sprite1.change_y = 2.5
+            self.sprite1.change_y = 5
 
         if key == arcade.key.S:
-            self.sprite1.change_y = -2.5
+            self.sprite1.change_y = -5
+
 
     def on_key_release(self, key, modifiers):
-        pass
+        if key == arcade.key.D or key == arcade.key.A:
+            self.sprite1.change_x = 0
+        elif key == arcade.key.W or key == arcade.key.S:
+            self.sprite1.change_y = 0
 
     def on_mouse_press(self, x, y, button, modifiers):
         pass
