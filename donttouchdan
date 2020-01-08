@@ -4,68 +4,60 @@ import random
 import settings
 import os
 
-class Zombie:
-    def setup(self):
-        self.x = x
-        self.y = y
-        self.radius = 25
-        self.color = arcade.color.RED
-
-    def draw(self):
-        arcade.draw_circle_filled(self.x, self.y, self.radius, self.color)
-
-    def update(self):
-        self.x += self.x_speed
-        self.y += self.y_speed
-
-        if self.x > settings.WIDTH or self.x < 0:
-            self.x_speed = -self.x_speed
-
-        if self.y > settings.HEIGHT or self.y < 0:
-            self.y_speed = -self.y_speed
+# class Zombie:
+#     def __init__(self, x: int, y: int, x_speed: int = 0, y_speed: int = 0):
+#         self.x = x
+#         self.y = y
+#         self.x_speed = x_speed
+#         self.y_speed = y_speed
+#         self.radius = 25
+#         self.color = arcade.color.RED
+# 
+#     def draw(self):
+#         arcade.draw_circle_filled(self.x, self.y, self.radius, self.color)
+# 
+#     def update(self):
+#         self.x += self.x_speed
+#         self.y += self.y_speed
+# 
+#         if self.x > settings.WIDTH or self.x < 0:
+#             self.x_speed = -self.x_speed
+# 
+#         if self.y > settings.HEIGHT or self.y < 0:
+#             self.y_speed = -self.y_speed
 
 
 class Chapter1View(arcade.View):
-    def on_show(self):
-        self.sprites = []
+    def __init__(self):
+        super().__init__()
+        arcade.set_background_color(arcade.color.WHITE)
 
-        for i in range(10):
-            self.x = random.randrange(settings.WIDTH)
-            self.y = random.randrange(settings.HEIGHT)
+        self.player = arcade.Sprite(center_x = 100, center_y = 100)
+        self.player.texture = arcade.make_soft_square_texture(50, arcade.color.BLUE, outer_alpha=255)
+
+        self.zombie_texture = arcade.make_soft_square_texture(50, arcade.color.RED, outer_alpha=255)
+        self.zombies = arcade.SpriteList()
+
+        for i in range(3):
+            x = random.randrange(settings.WIDTH)
+            y = random.randrange(settings.HEIGHT)
             dx = random.randrange(-5, 5)
             dy = random.randrange(-5, 5)
             zombie = Zombie(x, y, dx, dy)
-            self.sprites.append(zombie)
-
-
-        arcade.set_background_color(arcade.color.WHITE)
-        self.player = arcade.Sprite(center_x=100, center_y=100)
-        self.player.texture = arcade.make_soft_square_texture(50, arcade.color.BLUE, outer_alpha=255)
-
-        # self.zombie_texture = arcade.make_soft_square_texture(50, arcade.color.RED, outer_alpha=255)
-        # self.zombies = arcade.SpriteList()
-        #
-        # for i in range(5):
-        #     zombie = arcade.Sprite()
-        #     zombie.center_x = random.randrange(0, settings.WIDTH)
-        #     zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-        #     zombie.texture = self.zombie_texture
-        #     self.zombie_x_speed = random.randrange(-5, 5)
-        #     self.zombie_y_speed = random.randrange(-5, 5)
-        #     self.zombies.append(zombie)
+            zombie.texture = self.zombie_texture
+            self.zombies.append(zombie)
 
     def update(self, delta_time):
-        for s in self.sprites:
+        for s in self.zombies:
             s.update()
         self.player.update()
 
+
     def on_draw(self):
         arcade.start_render()
-        # arcade.draw_text("Chapter 1", settings.WIDTH/2, settings.HEIGHT/2,
-        #                  arcade.color.BLACK, font_size=30, anchor_x="center")
+        # Draw in here...
         self.player.draw()
-        for s in self.sprites:
-            s.draw()
+        self.zombies.draw()
 
 
     def on_key_press(self, key, modifiers):
@@ -79,12 +71,72 @@ class Chapter1View(arcade.View):
         if key == arcade.key.S:
             self.player.change_y = -5
 
-
     def on_key_release(self, key, modifiers):
         if key == arcade.key.D or key == arcade.key.A:
             self.player.change_x = 0
         elif key == arcade.key.W or key == arcade.key.S:
             self.player.change_y = 0
+
+# class Chapter1View(arcade.View):
+#     def on_show(self):
+#         self.sprites = []
+#
+#         for i in range(10):
+#             self.x = random.randrange(settings.WIDTH)
+#             self.y = random.randrange(settings.HEIGHT)
+#             dx = random.randrange(-5, 5)
+#             dy = random.randrange(-5, 5)
+#             zombie = Zombie(x, y, dx, dy)
+#             self.sprites.append(zombie)
+#
+#
+#         arcade.set_background_color(arcade.color.WHITE)
+#         self.player = arcade.Sprite(center_x=100, center_y=100)
+#         self.player.texture = arcade.make_soft_square_texture(50, arcade.color.BLUE, outer_alpha=255)
+#
+#         # self.zombie_texture = arcade.make_soft_square_texture(50, arcade.color.RED, outer_alpha=255)
+#         # self.zombies = arcade.SpriteList()
+#         #
+#         # for i in range(5):
+#         #     zombie = arcade.Sprite()
+#         #     zombie.center_x = random.randrange(0, settings.WIDTH)
+#         #     zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
+#         #     zombie.texture = self.zombie_texture
+#         #     self.zombie_x_speed = random.randrange(-5, 5)
+#         #     self.zombie_y_speed = random.randrange(-5, 5)
+#         #     self.zombies.append(zombie)
+#
+#     def update(self, delta_time):
+#         for s in self.sprites:
+#             s.update()
+#         self.player.update()
+#
+#     def on_draw(self):
+#         arcade.start_render()
+#         # arcade.draw_text("Chapter 1", settings.WIDTH/2, settings.HEIGHT/2,
+#         #                  arcade.color.BLACK, font_size=30, anchor_x="center")
+#         self.player.draw()
+#         for s in self.sprites:
+#             s.draw()
+#
+#
+#     def on_key_press(self, key, modifiers):
+#         # self.director.next_view()
+#         if key == arcade.key.D:
+#             self.player.change_x = 5
+#         if key == arcade.key.A:
+#             self.player.change_x = -5
+#         if key == arcade.key.W:
+#             self.player.change_y = 5
+#         if key == arcade.key.S:
+#             self.player.change_y = -5
+#
+#
+#     def on_key_release(self, key, modifiers):
+#         if key == arcade.key.D or key == arcade.key.A:
+#             self.player.change_x = 0
+#         elif key == arcade.key.W or key == arcade.key.S:
+#             self.player.change_y = 0
 
 
 
