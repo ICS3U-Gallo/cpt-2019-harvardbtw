@@ -12,20 +12,22 @@ import os
 #         self.y_speed = y_speed
 #         self.radius = 25
 #         self.color = arcade.color.RED
-# 
+#
 #     def draw(self):
 #         arcade.draw_circle_filled(self.x, self.y, self.radius, self.color)
-# 
+#
 #     def update(self):
 #         self.x += self.x_speed
 #         self.y += self.y_speed
-# 
+#
 #         if self.x > settings.WIDTH or self.x < 0:
 #             self.x_speed = -self.x_speed
-# 
+#
 #         if self.y > settings.HEIGHT or self.y < 0:
 #             self.y_speed = -self.y_speed
 
+class Player(arcade.Sprite):
+    
 
 class Chapter1View(arcade.View):
     def __init__(self):
@@ -39,18 +41,12 @@ class Chapter1View(arcade.View):
         self.zombies = arcade.SpriteList()
 
         for i in range(3):
-            x = random.randrange(settings.WIDTH)
-            y = random.randrange(settings.HEIGHT)
-            dx = random.randrange(-5, 5)
-            dy = random.randrange(-5, 5)
-            zombie = Zombie(x, y, dx, dy)
+            zombie = arcade.Sprite()
+            zombie.center_x = random.randrange(0, settings.WIDTH)
+            zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
             zombie.texture = self.zombie_texture
             self.zombies.append(zombie)
 
-    def update(self, delta_time):
-        for s in self.zombies:
-            s.update()
-        self.player.update()
 
 
     def on_draw(self):
@@ -58,6 +54,14 @@ class Chapter1View(arcade.View):
         # Draw in here...
         self.player.draw()
         self.zombies.draw()
+
+    def update(self, delta_time):
+        self.zombies.update()
+        self.player.update()
+
+        for s in self.zombies:
+            if self.player.collides_with_sprite(s):
+                print("HHHHHHHHHHHHHHHH")
 
 
     def on_key_press(self, key, modifiers):
