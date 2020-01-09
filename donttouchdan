@@ -10,21 +10,36 @@ class Zombie(arcade.Sprite):
     #     self.y = y
     #     self.x_speed = x_speed
     #     self.y_speed = y_speed
-    #     self.radius = 25
     #     self.color = arcade.color.RED
-
+    #
+    #
     # def draw(self):
     #     arcade.draw_circle_filled(self.x, self.y, self.radius, self.color)
 
-    def update(self):
-        self.x += self.x_speed
-        self.y += self.y_speed
+    def follow_player(self, player_sprite):
+        self.center_x += self.change_x
+        self.center_y += self.change_y
 
-        if self.x > settings.WIDTH or self.x < 0:
-            self.x_speed = -self.x_speed
+        # if random.randrange(100) == 0:
+        start_x = self.center_x
+        start_y = self.center_y
 
-        if self.y > settings.HEIGHT or self.y < 0:
-            self.y_speed = -self.y_speed
+        dest_x = player_sprite.center_x
+        dest_y = player_sprite.center_y
+
+        x_diff = dest_x - start_x
+        y_diff = dest_y - start_y
+        angle = math.atan2(y_diff, x_diff)
+
+        self.change_x = math.cos(angle) * settings.ZOMBIE_SPEED
+        self.change_y = math.sin(angle) * settings.ZOMBIE_SPEED
+
+
+        # if self.x > settings.WIDTH or self.x < 0:
+        #     self.x_speed = -self.x_speed
+        #
+        # if self.y > settings.HEIGHT or self.y < 0:
+        #     self.y_speed = -self.y_speed
 
 class Player(arcade.Sprite):
     def update(self):
@@ -60,8 +75,8 @@ class Chapter1View(arcade.View):
 
 
         for i in range(3):
-            zombie = arcade.Sprite()
-            zombie_sprite = Zombie("Images\zombie_right.png")
+            # zombie = arcade.Sprite()
+            zombie = Zombie("Images\zombie_right.png", 0.2)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
             zombie.texture = self.zombie_texture
@@ -73,15 +88,18 @@ class Chapter1View(arcade.View):
         minutes = int(self.time) // 60
         seconds = int(self.time) % 60
         output = ("Time: {}: {}".format(minutes, seconds))
-        arcade.draw_text(output, 300, 300,  arcade.color.BLACK, 24)
+
         self.player_list.draw()
         self.zombies.draw()
+        arcade.draw_text(output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
 
     def update(self, delta_time):
         self.time -= delta_time
-        self.zombies.update()
-        self.player_list.update()
+        # self.zombies.update()
+        self.player_sprite.update()
 
+        for zombie in self.zombies:
+            zombie.follow_player(self.player_sprite)
         for s in self.zombies:
             player_in_contact = s.collides_with_list(self.player_list)
             if player_in_contact:
