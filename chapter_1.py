@@ -4,6 +4,7 @@ import random
 import settings
 import os
 
+
 class Zombie(arcade.Sprite):
     # def __init__(self, x: int, y: int, x_speed: int = 0, y_speed: int = 0):
     #     self.x = x
@@ -73,6 +74,11 @@ class Chapter1View(arcade.View):
         self.zombies = arcade.SpriteList()
         self.zombie_texture = arcade.make_soft_square_texture(50, arcade.color.RED, outer_alpha=255)
 
+        # self.gun_sound =
+        # self.hit_sound =
+        self.bullet_list = arcade.SpriteList()
+
+
 
         for i in range(3):
             # zombie = arcade.Sprite()
@@ -90,6 +96,7 @@ class Chapter1View(arcade.View):
         output = ("Time: {}: {}".format(minutes, seconds))
 
         self.player_list.draw()
+        self.bullet_list.draw()
         self.zombies.draw()
         arcade.draw_text(output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
 
@@ -97,6 +104,14 @@ class Chapter1View(arcade.View):
         self.time -= delta_time
         # self.zombies.update()
         self.player_sprite.update()
+        self.bullet_list.update()
+
+        for bullet in self.bullet_list:
+            hit_list = arcade.check_for_collision_with_list(bullet, self.zombies)
+            if len(hit_list) > 0:
+                bullet.remove_from_sprite_lists()
+            if bullet.bottom > settings.WIDTH or bullet.top < 0 or bullet.right < 0 or bullet.left > settings.WIDTH:
+                bullet.remove_from_sprite_lists()
 
         for zombie in self.zombies:
             zombie.follow_player(self.player_sprite)
@@ -124,6 +139,30 @@ class Chapter1View(arcade.View):
             self.player_sprite.change_x = 0
         elif key == arcade.key.W or key == arcade.key.S:
             self.player_sprite.change_y = 0
+
+    def mouse_press(self, x, y, button, modifiers):
+        bullet = arcade.Sprite(":resources:images/space_shooter/laserBlue01.png", SPRITE_SCALING_LASER)
+
+        start_x = self.player_sprite.center_x
+        start_y = self.player_sprite.center_y
+        bullet.center_x = start_x
+        bullet.center_y = start_y
+
+
+        dest_x = x
+        dest_y = y
+
+        x_diff = dest_x - start_x
+        y_diff = dest_y - start_y
+        angle = math.atan2(y_diff, x_diff)
+
+        bullet.angle = math.degrees(angle)
+        print(f"Bullet angle: {bullet.angle:.2f}")
+
+        bullet.change_x = math.cos(angle) * BULLET_SPEED
+        bullet.change_y = math.sin(angle) * BULLET_SPEED
+
+        self.bullet_list.append(bullet)
 
 
 
