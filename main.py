@@ -13,6 +13,7 @@ class Director(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
         self.view_index = 0
+        self.set_mouse_visible(False)
         self.views = [
             MenuView,
             Chapter1View,
