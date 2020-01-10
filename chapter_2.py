@@ -46,7 +46,7 @@ class Chapter1View(arcade.View):
         self.time = 30.00
 
         self.player_list = arcade.SpriteList()
-        self.player = Player("zerotwo.jpg", 0.05)
+        self.player = Player("player.png", 0.05)
         self.player.center_x = 100
         self.player.center_y = 100
 
