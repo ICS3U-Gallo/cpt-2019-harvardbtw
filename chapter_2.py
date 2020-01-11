@@ -14,7 +14,6 @@ class Room:
 
 class Player(arcade.Sprite):
     def update(self):
-
         if self.left < 0:
             self.left = 0
         elif self.right > WIDTH - 1:
@@ -43,25 +42,30 @@ class Chapter1View(arcade.View):
         self.up_pressed = False
         self.down_pressed = False
 
-        self.zombie_blood = arcade.Sprite("Blood.png", 0.2)
-        self.zombie_blood.center_x = 400
-        self.zombie_blood.center_y = 300
-
-        self.vial = arcade.Sprite("Vial.png", 0.03)
-        self.vial.center_x = 450
-        self.vial.center_y = 300
-
-        self.antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
-        self.antibiotic.center_x = 500
-        self.antibiotic.center_y = 300
+        self.item_list = arcade.SpriteList()
 
         self.wall_list = arcade.SpriteList()
+        for i in range(1):
+            zombie_blood = arcade.Sprite("Blood.png", 0.2)
+            zombie_blood.center_x = 700
+            zombie_blood.center_y = 100
+
+            vial = arcade.Sprite("Vial.png", 0.03)
+            vial.center_x = 450
+            vial.center_y = 300
+
+            antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
+            antibiotic.center_x = 500
+            antibiotic.center_y = 300
+            self.item_list.append(zombie_blood)
+            self.item_list.append(antibiotic)
+            self.item_list.append(vial)
+
         for x in range(0, 800, 64):
             wall = arcade.Sprite("floor.png", 0.2)
             wall.center_x = x
             wall.center_y = 32
             self.wall_list.append(wall)
-
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY)
 
     def on_draw(self):
@@ -72,9 +76,7 @@ class Chapter1View(arcade.View):
         arcade.draw_text(output, WIDTH - 175, HEIGHT - 30, arcade.color.BLACK, 24)
 
         self.player.draw()
-        self.zombie_blood.draw()
-        self.vial.draw()
-        self.antibiotic.draw()
+        self.item_list.draw()
         self.wall_list.draw()
 
     def on_key_press(self, key, modifiers):
@@ -98,17 +100,18 @@ class Chapter1View(arcade.View):
     def update(self, delta_time):
         self.time -= delta_time
         self.player.change_x = 0
+
         if self.left_pressed and not self.right_pressed:
             self.player.change_x = -MOVEMENT_SPEED
         elif self.right_pressed and not self.left_pressed:
             self.player.change_x = MOVEMENT_SPEED
 
         self.player.update()
-        self.zombie_blood.update()
-        self.antibiotic.update()
-        self.vial.update()
         self.physics_engine.update()
 
+        item_hit_list = arcade.check_for_collision_with_list(self.player,self.item_list)
+        for item in item_hit_list:
+            item.remove_from_sprite_lists()
 
 if __name__ == "__main__":
     window = arcade.Window(WIDTH, HEIGHT)
