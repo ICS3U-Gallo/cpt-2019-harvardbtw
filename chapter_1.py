@@ -80,7 +80,7 @@ class Chapter1View(arcade.View):
 
         self.player_list = arcade.SpriteList()
         self.player_sprite = Player("Images\player_right.png")
-        self.player_sprite.center_x = 100
+        self.player_sprite.center_x = settings.WIDTH / 2
         self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
@@ -90,7 +90,7 @@ class Chapter1View(arcade.View):
         # self.gun_sound =
         # self.hit_sound =
 
-        for i in range(12):
+        for i in range(8):
             # zombie = arcade.Sprite()
             zombie = Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
