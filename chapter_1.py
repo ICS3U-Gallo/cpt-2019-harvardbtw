@@ -92,10 +92,10 @@ class Chapter1View(arcade.View):
 
         for i in range(12):
             # zombie = arcade.Sprite()
-            zombie = Zombie("Images\zombie_right.png", 0.2)
+            zombie = Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-            zombie.texture = self.zombie_texture
+            # zombie.texture = self.zombie_texture
             self.zombies.append(zombie)
 
         for k in range(settings.COIN_COUNT):
