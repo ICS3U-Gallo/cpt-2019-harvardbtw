@@ -1,8 +1,8 @@
 import arcade
 
-WIDTH = 800
-HEIGHT = 600
-MOVEMENT_SPEED = 5
+WIDTH = 1000
+HEIGHT = 1000
+MOVEMENT_SPEED = 4
 GRAVITY = 1
 PLAYER_JUMP_SPEED = 15
 SLOW = 2.5
@@ -31,6 +31,7 @@ class Chapter1View(arcade.View):
         arcade.set_background_color(arcade.color.WHITE)
         self.physics_engine = None
         self.time = 30.00
+
         self.player_list = arcade.SpriteList()
         self.player = Player("zerotwo.jpg", 0.05)
         self.player.center_x = 100
@@ -43,45 +44,14 @@ class Chapter1View(arcade.View):
 
         self.item_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
+        self.ladder_list = arcade.SpriteList()
 
-        zombie_blood = arcade.Sprite("Blood.png", 0.2)
-        zombie_blood.center_x = 775
-        zombie_blood.center_y = 60
-
-        vial = arcade.Sprite("Vial.png", 0.03)
-        vial.center_x = 25
-        vial.center_y = 255
-
-        antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
-        antibiotic.center_x = 777
-        antibiotic.center_y = 440
-
-        self.item_list.append(zombie_blood)
-        self.item_list.append(antibiotic)
-        self.item_list.append(vial)
-
-        for x in range(0, 800, 64):
-            wall = arcade.Sprite("floor.png", 0.1)
-            wall.center_x = x
-            wall.center_y = 20
-            self.wall_list.append(wall)
-
-        for x in range(0, 700, 64):
-            wall = arcade.Sprite("floor.png", 0.1)
-            wall.center_x = x
-            wall.center_y = 215
-            self.wall_list.append(wall)
-
-        for x in range(175, 800, 64):
-            wall = arcade.Sprite("floor.png", 0.1)
-            wall.center_x = x
-            wall.center_y = 400
-            self.wall_list.append(wall)
-
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY,
+                                                             ladders=self.ladder_list)
 
     def on_draw(self):
         arcade.start_render()
+
         minutes = int(self.time) // 60
         seconds = int(self.time) % 60
         output = ("Time: {}: {}".format(minutes, seconds))
@@ -90,6 +60,7 @@ class Chapter1View(arcade.View):
         self.player.draw()
         self.item_list.draw()
         self.wall_list.draw()
+        self.ladder_list.draw()
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
@@ -120,10 +91,40 @@ class Chapter1View(arcade.View):
 
         self.player.update()
         self.physics_engine.update()
+        self.item_list.update()
 
         item_hit_list = arcade.check_for_collision_with_list(self.player, self.item_list)
         for item in item_hit_list:
             item.remove_from_sprite_lists()
+
+    def on_show(self):
+        zombie_blood = arcade.Sprite("Blood.png", 0.2)
+        zombie_blood.center_x = 975
+        zombie_blood.center_y = 40
+
+        vial = arcade.Sprite("Vial.png", 0.03)
+        vial.center_x = 75
+        vial.center_y = 240
+
+        antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
+        antibiotic.center_x = 975
+        antibiotic.center_y = 440
+
+        poison = arcade.Sprite("poison.jpg", 0.2)
+        poison.center_x = 75
+        poison.center_y = 640
+
+        self.item_list.append(zombie_blood)
+        self.item_list.append(antibiotic)
+        self.item_list.append(vial)
+        self.item_list.append(poison)
+
+        for y in range(10, 1010, 200):
+            for x in range(0, 1000, 64):
+                wall = arcade.Sprite("floor.png", 0.06)
+                wall.center_x = x
+                wall.center_y = y
+                self.wall_list.append(wall)
 
 
 if __name__ == "__main__":
