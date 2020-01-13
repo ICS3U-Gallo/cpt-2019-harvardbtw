@@ -23,8 +23,7 @@ class Chapter3View(arcade.View):
         self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
 # Gun
-        self.gun = arcade.Sprite(center_x=WIDTH/2, center_y=0)
-        self.gun.texture = arcade.make_soft_square_texture(100, arcade.color.WHITE, outer_alpha=255)
+        self.gun = arcade.Sprite('Chapter 3 Sprites/gun.png', center_x=WIDTH/2, center_y=-15, scale=0.13)
 # Red Dot
         self.mouse = arcade.Sprite(center_x=100, center_y=100)
         self.mouse.texture = arcade.make_soft_circle_texture(10, arcade.color.RED, outer_alpha=10)
@@ -100,8 +99,6 @@ class Chapter3View(arcade.View):
         self.mouse.center_x = x
         self.mouse.center_y = y
 
-        self.gun.height = 15
-        self.gun.width = 200
         x_diff = x - self.gun.center_x
         y_diff = y - self.gun.center_y
         angle = math.atan2(y_diff, x_diff)
@@ -109,14 +106,12 @@ class Chapter3View(arcade.View):
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         global bullet_speed
-        bullet = arcade.Sprite()
-        bullet.center_x = self.player.center_x
-        bullet.center_y = self.player.center_y
-        bullet.texture = self.bullet_texture
-        bullet.width = 20
+        bullet = arcade.Sprite('Chapter 3 Sprites/bullet.png', scale=0.01)
+        bullet.center_x = WIDTH/2
+        bullet.center_y = -10
 
-        x_diff = x - self.player.center_x
-        y_diff = y - self.player.center_y
+        x_diff = x - bullet.center_x 
+        y_diff = y - bullet.center_y
         angle = math.atan2(y_diff, x_diff)
 
         bullet.angle = math.degrees(angle)
