@@ -31,14 +31,6 @@ class Chapter3View(arcade.View):
 # Enemy
         self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
         self.enemies = arcade.SpriteList()        
-        
-        if random.randrange(50) == 0:
-            enemy = arcade.Sprite()
-            enemy.center_x = random.randrange(50, WIDTH-50)
-            enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
-            enemy.change_y = -3
-            enemy.texture = self.enemy_texture
-            self.enemies.append(enemy)
             
 # Bullet
         self.bullet_texture = arcade.make_soft_square_texture(10, arcade.color.YELLOW, outer_alpha=255)
