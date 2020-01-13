@@ -17,6 +17,20 @@ class Coin(arcade.Sprite):
 
 
 class Level1_Zombie(arcade.Sprite):
+    def update(self):
+        # self.change_x = random.randrange(-2, 2)
+        # self.change_y = random.randrange(-2, 2)
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        if self.center_x > settings.WIDTH or self.center_x < 0:
+            self.change_x = -self.change_x
+
+        if self.center_y > settings.HEIGHT or self.center_y < 0:
+            self.change_y = -self.change_y
+
+
+class Level2_Zombie(arcade.Sprite):
     def follow_player(self, player_sprite):
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -34,20 +48,6 @@ class Level1_Zombie(arcade.Sprite):
 
         self.change_x = math.cos(angle) * settings.ZOMBIE_SPEED
         self.change_y = math.sin(angle) * settings.ZOMBIE_SPEED
-
-
-class Level2_Zombie(arcade.Sprite):
-    def update(self):
-        # self.change_x = random.randrange(-2, 2)
-        # self.change_y = random.randrange(-2, 2)
-        self.center_x += self.change_x
-        self.center_y += self.change_y
-
-        if self.center_x > settings.WIDTH or self.center_x < 0:
-            self.change_x = -self.change_x
-
-        if self.center_y > settings.HEIGHT or self.center_y < 0:
-            self.change_y = -self.change_y
 
 
 class Level3_Zombie(arcade.Sprite):
@@ -97,20 +97,20 @@ class Chapter1View(arcade.View):
 
         for i in range(8):
             # zombie = arcade.Sprite()
-            zombie = Level1_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie = Level2_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
             # zombie.texture = self.zombie_texture
-            self.level1_zombies.append(zombie)
+            self.level2_zombies.append(zombie)
 
         for j in range(2):
-            zombie = Level2_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie = Level1_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
             zombie.change_x = random.randrange(-2, 2)
             zombie.change_y = random.randrange(-2, 2)
 
-            self.level2_zombies.append(zombie)
+            self.level1_zombies.append(zombie)
 
         for k in range(settings.COIN_COUNT):
             coin = Coin("Images\coin.png", settings.SPRITE_SCALING_COIN)
@@ -129,8 +129,8 @@ class Chapter1View(arcade.View):
 
         self.coin_sprite_list.draw()
         self.player_list.draw()
-        self.level2_zombies.draw()
         self.level1_zombies.draw()
+        self.level2_zombies.draw()
 
         arcade.draw_text(time_output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
         arcade.draw_text(score_output, settings.WIDTH - 790, settings.HEIGHT - 30, arcade.color.BLACK, 24)
@@ -141,7 +141,7 @@ class Chapter1View(arcade.View):
         self.player_sprite.update()
         self.coin_sprite_list.update()
         # self.level1_zombies.update()
-        self.level2_zombies.update()
+        self.level1_zombies.update()
 
         hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_sprite_list)
 
@@ -149,18 +149,18 @@ class Chapter1View(arcade.View):
             coin.remove_from_sprite_lists()
             self.score += 1
 
-        for zombie in self.level1_zombies:
-            zombie.follow_player(self.player_sprite)
-
-        for s in self.level1_zombies:
-            player_in_contact = s.collides_with_list(self.player_list)
+        for i in self.level1_zombies:
+            player_in_contact = i.collides_with_list(self.player_list)
             if player_in_contact:
-                print("HHHHHHHHHHHHHHHH")
+                print("oof")
+
+        for zombie in self.level2_zombies:
+            zombie.follow_player(self.player_sprite)
 
         for s in self.level2_zombies:
             player_in_contact = s.collides_with_list(self.player_list)
             if player_in_contact:
-                print("oof")
+                print("HHHHHHHHHHHHHHHH")
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
