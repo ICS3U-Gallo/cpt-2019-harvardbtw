@@ -169,13 +169,13 @@ class Chapter1View(arcade.View):
         if key == arcade.key.ESCAPE:
             pass
         if key == arcade.key.D:
-            self.player_sprite.change_x = settings.PLAYER_SPEED_POSITIVE
+            self.player_sprite.change_x = settings.PLAYER_SPEED
         if key == arcade.key.A:
-            self.player_sprite.change_x = settings.PLAYER_SPEED_NEGATIVE
+            self.player_sprite.change_x = -settings.PLAYER_SPEED
         if key == arcade.key.W:
-            self.player_sprite.change_y = settings.PLAYER_SPEED_POSITIVE
+            self.player_sprite.change_y = settings.PLAYER_SPEED
         if key == arcade.key.S:
-            self.player_sprite.change_y = settings.PLAYER_SPEED_NEGATIVE
+            self.player_sprite.change_y = -settings.PLAYER_SPEED
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.D or key == arcade.key.A:
