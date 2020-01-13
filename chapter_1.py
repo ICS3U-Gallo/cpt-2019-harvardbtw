@@ -5,11 +5,30 @@ import settings
 import os
 
 class MenuView(arcade.View):
-    pass
+    def on_show(self):
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Menu Screen", settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to start", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        instructions_view = InstructionView()
+        self.window.show_view(instructions_view)
 
 class InstructionView(arcade.View):
-    pass
+    def on_show(self):
+        arcade.set_background_color(arcade.color.ORANGE_PEEL)
 
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Instructions Screen", settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to advance", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        chapter1_view = Chapter1View()
+        self.window.show_view(chapter1_view)
 
 class Coin(arcade.Sprite):
     def reset_pos(self):
@@ -235,7 +254,7 @@ if __name__ == "__main__":
     """
     from utils import FakeDirector
     window = arcade.Window(settings.WIDTH, settings.HEIGHT)
-    my_view = Chapter1View()
+    my_view = MenuView()
     my_view.director = FakeDirector(close_on_next_view=True)
     window.show_view(my_view)
     arcade.run()
