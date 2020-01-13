@@ -4,6 +4,12 @@ import random
 import settings
 import os
 
+class MenuView(arcade.View):
+    pass
+
+class InstructionView(arcade.View):
+    pass
+
 
 class Coin(arcade.Sprite):
     def reset_pos(self):
@@ -46,12 +52,21 @@ class Level2_Zombie(arcade.Sprite):
         y_diff = dest_y - start_y
         angle = math.atan2(y_diff, x_diff)
 
-        self.change_x = math.cos(angle) * settings.ZOMBIE_SPEED
-        self.change_y = math.sin(angle) * settings.ZOMBIE_SPEED
+        self.change_x = math.cos(angle) * settings.LEVEL1_ZOMBIE_SPEED
+        self.change_y = math.sin(angle) * settings.LEVEL1_ZOMBIE_SPEED
 
 
 class Level3_Zombie(arcade.Sprite):
-    pass
+    def update(self):
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        if self.center_x > settings.WIDTH or self.center_x < 0:
+            self.change_x = -self.change_x
+
+        if self.center_y > settings.HEIGHT or self.center_y < 0:
+            self.change_y = -self.change_y
+
 
 
 class Player(arcade.Sprite):
@@ -92,8 +107,19 @@ class Chapter1View(arcade.View):
         self.level2_zombies = arcade.SpriteList()
         self.level3_zombies = arcade.SpriteList()
 
+        foo = [-8, 8]
+
         # self.gun_sound =
         # self.hit_sound =
+
+        for j in range(6):
+            zombie = Level1_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie.center_x = random.randrange(0, settings.WIDTH)
+            zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
+            zombie.change_x = random.randrange(-2, 2)
+            zombie.change_y = random.randrange(-2, 2)
+
+            self.level1_zombies.append(zombie)
 
         for i in range(8):
             # zombie = arcade.Sprite()
@@ -103,14 +129,14 @@ class Chapter1View(arcade.View):
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for j in range(2):
-            zombie = Level1_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
+        for l in range(2):
+            zombie = Level3_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-            zombie.change_x = random.randrange(-2, 2)
-            zombie.change_y = random.randrange(-2, 2)
+            zombie.change_x = random.choice(foo)
+            zombie.change_y = random.choice(foo)
 
-            self.level1_zombies.append(zombie)
+            self.level3_zombies.append(zombie)
 
         for k in range(settings.COIN_COUNT):
             coin = Coin("Images\coin.png", settings.SPRITE_SCALING_COIN)
@@ -132,6 +158,8 @@ class Chapter1View(arcade.View):
         self.level1_zombies.draw()
         if self.time <= 20:
             self.level2_zombies.draw()
+        if self.time <= 10:
+            self.level3_zombies.draw()
 
         arcade.draw_text(time_output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
         arcade.draw_text(score_output, settings.WIDTH - 790, settings.HEIGHT - 30, arcade.color.BLACK, 24)
@@ -144,6 +172,7 @@ class Chapter1View(arcade.View):
         self.coin_sprite_list.update()
         # self.level1_zombies.update()
         self.level1_zombies.update()
+        self.level3_zombies.update()
 
         hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_sprite_list)
 
@@ -164,6 +193,12 @@ class Chapter1View(arcade.View):
                 player_in_contact = s.collides_with_list(self.player_list)
                 if player_in_contact:
                     print("HHHHHHHHHHHHHHHH")
+
+        if self.time <= 10:
+            for s in self.level3_zombies:
+                player_in_contact = s.collides_with_list(self.player_list)
+                if player_in_contact:
+                    print("bruh")
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
@@ -187,6 +222,8 @@ class Chapter1View(arcade.View):
     def mouse_press(self, x, y, button, modifiers):
         pass
 
+class GameOverView(arcade.View):
+    pass
 
 if __name__ == "__main__":
     """This section of code will allow you to run your View
