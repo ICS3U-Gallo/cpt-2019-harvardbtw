@@ -45,6 +45,7 @@ class Chapter1View(arcade.View):
         self.item_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
         self.ladder_list = arcade.SpriteList()
+        self.death_list = arcade.SpriteList()
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY,
                                                              ladders=self.ladder_list)
@@ -61,6 +62,7 @@ class Chapter1View(arcade.View):
         self.item_list.draw()
         self.wall_list.draw()
         self.ladder_list.draw()
+        self.death_list.draw()
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
@@ -150,6 +152,12 @@ class Chapter1View(arcade.View):
             ladder_2.center_x = 20
             ladder_2.center_y = y
             self.ladder_list.append(ladder_2)
+
+        for x in range(150, 900, 150):
+            spike = arcade.Sprite("spike.png", 0.2)
+            spike.center_x = x
+            spike.center_y = 33
+            self.death_list.append(spike)
 
 
 if __name__ == "__main__":
