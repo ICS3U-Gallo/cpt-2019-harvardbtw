@@ -137,7 +137,8 @@ class Chapter1View(arcade.View):
         arcade.draw_text(score_output, settings.WIDTH - 790, settings.HEIGHT - 30, arcade.color.BLACK, 24)
 
     def update(self, delta_time):
-        self.time -= delta_time
+        if self.time >= 0:
+            self.time -= delta_time
         # self.zombies.update()
         self.player_sprite.update()
         self.coin_sprite_list.update()
