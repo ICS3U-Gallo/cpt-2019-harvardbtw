@@ -126,7 +126,7 @@ class Chapter1View(arcade.View):
         self.level2_zombies = arcade.SpriteList()
         self.level3_zombies = arcade.SpriteList()
 
-        foo = [-8, 8]
+        level3_zombie_speed = [-8, 8]
 
         # self.gun_sound =
         # self.hit_sound =
@@ -152,8 +152,8 @@ class Chapter1View(arcade.View):
             zombie = Level3_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-            zombie.change_x = random.choice(foo)
-            zombie.change_y = random.choice(foo)
+            zombie.change_x = random.choice(level3_zombie_speed)
+            zombie.change_y = random.choice(level3_zombie_speed)
 
             self.level3_zombies.append(zombie)
 
