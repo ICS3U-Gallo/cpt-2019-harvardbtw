@@ -99,7 +99,7 @@ class Chapter1View(arcade.View):
 
     def on_show(self):
         zombie_blood = arcade.Sprite("Blood.png", 0.2)
-        zombie_blood.center_x = 975
+        zombie_blood.center_x = 930
         zombie_blood.center_y = 40
 
         vial = arcade.Sprite("Vial.png", 0.03)
@@ -107,7 +107,7 @@ class Chapter1View(arcade.View):
         vial.center_y = 240
 
         antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
-        antibiotic.center_x = 975
+        antibiotic.center_x = 930
         antibiotic.center_y = 440
 
         poison = arcade.Sprite("poison.jpg", 0.2)
@@ -120,11 +120,36 @@ class Chapter1View(arcade.View):
         self.item_list.append(poison)
 
         for y in range(10, 1010, 200):
-            for x in range(0, 1000, 64):
-                wall = arcade.Sprite("floor.png", 0.06)
-                wall.center_x = x
-                wall.center_y = y
-                self.wall_list.append(wall)
+            if y == 210 or y == 610:
+                for x in range(0, 900, 64):
+                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall.center_x = x
+                    wall.center_y = y
+                    self.wall_list.append(wall)
+            elif y == 410 or y == 810:
+                for x in range(100, 1000, 64):
+                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall.center_x = x
+                    wall.center_y = y
+                    self.wall_list.append(wall)
+            else:
+                for x in range(0, 1000, 64):
+                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall.center_x = x
+                    wall.center_y = y
+                    self.wall_list.append(wall)
+
+        for y in range(118, 618, 400):
+            ladder = arcade.Sprite("ladder.png", 0.35)
+            ladder.center_x = 980
+            ladder.center_y = y
+            self.ladder_list.append(ladder)
+
+        for y in range(318, 817, 400):
+            ladder_2 = arcade.Sprite("ladder.png", 0.35)
+            ladder_2.center_x = 20
+            ladder_2.center_y = y
+            self.ladder_list.append(ladder_2)
 
 
 if __name__ == "__main__":
