@@ -12,7 +12,6 @@ HEIGHT = 600
 class Chapter3View(arcade.View):
     def on_show(self):
         global finish, bullet_speed
-
         arcade.set_background_color(arcade.color.BLACK)
         self.total_time = 31.0
         finish = False
@@ -31,10 +30,18 @@ class Chapter3View(arcade.View):
         self.mouse.texture = arcade.make_soft_circle_texture(10, arcade.color.RED, outer_alpha=10)
 # Enemy
         self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
-        self.enemies = arcade.SpriteList()
+        self.enemies = arcade.SpriteList()        
         
+        if random.randrange(50) == 0:
+            enemy = arcade.Sprite()
+            enemy.center_x = random.randrange(50, WIDTH-50)
+            enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
+            enemy.change_y = -3
+            enemy.texture = self.enemy_texture
+            self.enemies.append(enemy)
+            
 # Bullet
-        self.bullet_texture = arcade.make_soft_square_texture(10, arcade.color.ORANGE, outer_alpha=255)
+        self.bullet_texture = arcade.make_soft_square_texture(10, arcade.color.YELLOW, outer_alpha=255)
         self.bullets = arcade.SpriteList()
         bullet_speed = 40
 
@@ -53,6 +60,7 @@ class Chapter3View(arcade.View):
         minutes = int(self.total_time) // 60
         seconds = int(self.total_time) % 60
         output = f"Time: {minutes:02d}:{seconds:02d}"
+        goal = "Defend The Base"
 
         if seconds == 0:
             finish = True
@@ -60,6 +68,8 @@ class Chapter3View(arcade.View):
             self.director.next_view()
         if finish is False:
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
+        if seconds >= 28:
+            arcade.draw_text(goal, WIDTH/2-150, HEIGHT-80, arcade.color.WHITE, 30)
 
     def update(self, delta_time):
         global finish
@@ -68,25 +78,31 @@ class Chapter3View(arcade.View):
         self.gun.update()
 
 # Update Timer
-        if finish == False:
+        if finish is False:
             self.total_time -= delta_time
 
 # Spawn Enemies
-        if random.randrange(50) == 0:
+        if random.randrange(30) == 0:
             enemy = arcade.Sprite()
-            enemy.center_x = random.randrange(0, WIDTH)
+            enemy.center_x = random.randrange(50, WIDTH-50)
             enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
             enemy.change_y = -3
             enemy.texture = self.enemy_texture
             self.enemies.append(enemy)
-            
+
 # Update Bullet
         for enemy in self.enemies:
             bullets_in_contact = enemy.collides_with_list(self.bullets)
-            if bullets_in_contact:
+            if bullets_in_contact:  
                 enemy.kill()
                 for bullet in bullets_in_contact:
                     bullet.kill()
+
+        for enemy in self.enemies:
+            bullets_in_contact = self.base.collides_with_list(self.enemies)
+            if bullets_in_contact:
+                self.director.next_view()
+                enemy.kill()
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
