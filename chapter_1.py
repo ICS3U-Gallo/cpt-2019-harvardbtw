@@ -15,7 +15,7 @@ class Coin(arcade.Sprite):
             self.reset_pos
 
 
-class Zombie(arcade.Sprite):
+class Level1_Zombie(arcade.Sprite):
     # def __init__(self, x: int, y: int, x_speed: int = 0, y_speed: int = 0):
     #     self.x = x
     #     self.y = y
@@ -51,6 +51,13 @@ class Zombie(arcade.Sprite):
         #
         # if self.y > settings.HEIGHT or self.y < 0:
         #     self.y_speed = -self.y_speed
+
+class Level2_Zombie(arcade.sprite):
+    pass
+
+class Level3_Zombie(arcade.sprite):
+    pass
+
 
 class Player(arcade.Sprite):
     def update(self):
@@ -92,7 +99,7 @@ class Chapter1View(arcade.View):
 
         for i in range(8):
             # zombie = arcade.Sprite()
-            zombie = Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie = Level1_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
             # zombie.texture = self.zombie_texture
