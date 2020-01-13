@@ -1,3 +1,4 @@
+import random
 WIDTH = 800
 HEIGHT = 600
 
@@ -5,7 +6,7 @@ TEXTURE_IDLE = 0
 TEXTURE_LEFT = 1
 TEXTURE_RIGHT = 2
 
-ZOMBIE_SPEED = 2.2
+LEVEL1_ZOMBIE_SPEED = random.randrange(1, 3)
 PLAYER_SPEED = 4
 COIN_COUNT = 120
 
