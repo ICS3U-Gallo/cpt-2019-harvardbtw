@@ -17,17 +17,6 @@ class Coin(arcade.Sprite):
 
 
 class Level1_Zombie(arcade.Sprite):
-    # def __init__(self, x: int, y: int, x_speed: int = 0, y_speed: int = 0):
-    #     self.x = x
-    #     self.y = y
-    #     self.x_speed = x_speed
-    #     self.y_speed = y_speed
-    #     self.color = arcade.color.RED
-    #
-    #
-    # def draw(self):
-    #     arcade.draw_circle_filled(self.x, self.y, self.radius, self.color)
-
     def follow_player(self, player_sprite):
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -45,12 +34,6 @@ class Level1_Zombie(arcade.Sprite):
 
         self.change_x = math.cos(angle) * settings.ZOMBIE_SPEED
         self.change_y = math.sin(angle) * settings.ZOMBIE_SPEED
-
-        # if self.x > settings.WIDTH or self.x < 0:
-        #     self.x_speed = -self.x_speed
-        #
-        # if self.y > settings.HEIGHT or self.y < 0:
-        #     self.y_speed = -self.y_speed
 
 
 class Level2_Zombie(arcade.Sprite):
