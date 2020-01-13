@@ -129,8 +129,8 @@ class Chapter1View(arcade.View):
 
         self.coin_sprite_list.draw()
         self.player_list.draw()
-        self.level1_zombies.draw()
         self.level2_zombies.draw()
+        self.level1_zombies.draw()
 
         arcade.draw_text(time_output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
         arcade.draw_text(score_output, settings.WIDTH - 790, settings.HEIGHT - 30, arcade.color.BLACK, 24)
@@ -156,6 +156,11 @@ class Chapter1View(arcade.View):
             player_in_contact = s.collides_with_list(self.player_list)
             if player_in_contact:
                 print("HHHHHHHHHHHHHHHH")
+
+        for s in self.level2_zombies:
+            player_in_contact = s.collides_with_list(self.player_list)
+            if player_in_contact:
+                print("oof")
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
