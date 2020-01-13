@@ -4,6 +4,7 @@ import random
 import settings
 import os
 
+
 class Coin(arcade.Sprite):
     def reset_pos(self):
         self.center_y = random.randrange(settings.HEIGHT + 20, settings.HEIGHT + 100)
@@ -12,7 +13,7 @@ class Coin(arcade.Sprite):
     def update(self):
         # self.center_y -= 1
         if self.top < 0:
-            self.reset_pos
+            self.reset_pos()
 
 
 class Level1_Zombie(arcade.Sprite):
@@ -45,28 +46,24 @@ class Level1_Zombie(arcade.Sprite):
         self.change_x = math.cos(angle) * settings.ZOMBIE_SPEED
         self.change_y = math.sin(angle) * settings.ZOMBIE_SPEED
 
-
         # if self.x > settings.WIDTH or self.x < 0:
         #     self.x_speed = -self.x_speed
         #
         # if self.y > settings.HEIGHT or self.y < 0:
         #     self.y_speed = -self.y_speed
 
+
 class Level2_Zombie(arcade.Sprite):
-    def update(self, player_sprite):
-        self.x_speed = random.randrange(-5, 5)
-        self.y_speed = random.randrange(-5, 5)
+    def update(self):
+        # self.change_x = random.randrange(-2, 2)
+        # self.change_y = random.randrange(-2, 2)
+        self.center_x += self.change_x
+        self.center_y += self.change_y
 
-        x = self.center_x
-        y = self.center_y
+        if self.center_x > settings.WIDTH or self.center_x < 0:
+            self.change_x = -self.change_x
 
-        self.x += self.x_speed
-        self.y += self.y_speed
-
-        if self.x > settings.WIDTH or self.x < 0:
-            self.x_speed = -self.x_speed
-
-        if self.y > settings.HEIGHT or self.y < 0:
+        if self.center_y > settings.HEIGHT or self.center_y < 0:
             self.change_y = -self.change_y
 
 
@@ -127,7 +124,8 @@ class Chapter1View(arcade.View):
             zombie = Level2_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-
+            zombie.change_x = random.randrange(-2, 2)
+            zombie.change_y = random.randrange(-2, 2)
 
             self.level2_zombies.append(zombie)
 
@@ -137,8 +135,6 @@ class Chapter1View(arcade.View):
             coin.center_y = random.randrange(settings.HEIGHT)
 
             self.coin_sprite_list.append(coin)
-
-
 
     def on_draw(self):
         arcade.start_render()
@@ -162,14 +158,13 @@ class Chapter1View(arcade.View):
         self.player_sprite.update()
         self.coin_sprite_list.update()
         # self.level1_zombies.update()
-
+        self.level2_zombies.update()
 
         hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_sprite_list)
 
         for coin in hit_list:
             coin.remove_from_sprite_lists()
             self.score += 1
-
 
         for zombie in self.level1_zombies:
             zombie.follow_player(self.player_sprite)
@@ -178,7 +173,6 @@ class Chapter1View(arcade.View):
             player_in_contact = s.collides_with_list(self.player_list)
             if player_in_contact:
                 print("HHHHHHHHHHHHHHHH")
-
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
@@ -201,8 +195,6 @@ class Chapter1View(arcade.View):
 
     def mouse_press(self, x, y, button, modifiers):
         pass
-
-
 
 
 if __name__ == "__main__":
