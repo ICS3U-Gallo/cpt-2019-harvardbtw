@@ -4,13 +4,14 @@ import random
 import settings
 import os
 
+
 class MenuView(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.WHITE)
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Menu Screen", settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text("Dodge the Zombies!!", settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
         arcade.draw_text("Click to start", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
@@ -126,29 +127,31 @@ class Chapter1View(arcade.View):
         self.level2_zombies = arcade.SpriteList()
         self.level3_zombies = arcade.SpriteList()
 
+        level1_zombie_speed = [-2, 2]
+
         level3_zombie_speed = [-8, 8]
 
         # self.gun_sound =
         # self.hit_sound =
 
-        for j in range(6):
+        for level1 in range(4):
             zombie = Level1_Zombie("Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
-            zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
-            zombie.change_x = random.randrange(-2, 2)
-            zombie.change_y = random.randrange(-2, 2)
+            zombie.center_y = (settings.HEIGHT - 50)
+            zombie.change_x = random.choice(level1_zombie_speed)
+            zombie.change_y = random.choice(level1_zombie_speed)
 
             self.level1_zombies.append(zombie)
 
-        for i in range(8):
+        for level2 in range(7):
             # zombie = arcade.Sprite()
             zombie = Level2_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
-            zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
+            zombie.center_y = (settings.HEIGHT - 50)
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for l in range(2):
+        for level3 in range(4):
             zombie = Level3_Zombie("Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
@@ -157,7 +160,7 @@ class Chapter1View(arcade.View):
 
             self.level3_zombies.append(zombie)
 
-        for k in range(settings.COIN_COUNT):
+        for coin in range(settings.COIN_COUNT):
             coin = Coin("Images\coin.png", settings.SPRITE_SCALING_COIN)
             coin.center_x = random.randrange(settings.WIDTH)
             coin.center_y = random.randrange(settings.HEIGHT)
@@ -199,25 +202,28 @@ class Chapter1View(arcade.View):
             coin.remove_from_sprite_lists()
             self.score += 1
 
-        for i in self.level1_zombies:
-            player_in_contact = i.collides_with_list(self.player_list)
+        for level1_zombie in self.level1_zombies:
+            player_in_contact = level1_zombie.collides_with_list(self.player_list)
             if player_in_contact:
-                print("oof")
+                game_over_view = GameOverView()
+                self.window.show_view(game_over_view)
 
         if self.time <= 20:
-            for zombie in self.level2_zombies:
-                zombie.follow_player(self.player_sprite)
+            for level2_zombie in self.level2_zombies:
+                level2_zombie.follow_player(self.player_sprite)
 
-            for s in self.level2_zombies:
-                player_in_contact = s.collides_with_list(self.player_list)
+            for level_2_zombie in self.level2_zombies:
+                player_in_contact = level_2_zombie.collides_with_list(self.player_list)
                 if player_in_contact:
-                    print("HHHHHHHHHHHHHHHH")
+                    game_over_view = GameOverView()
+                    self.window.show_view(game_over_view)
 
         if self.time <= 10:
-            for s in self.level3_zombies:
-                player_in_contact = s.collides_with_list(self.player_list)
+            for level3_zombie in self.level3_zombies:
+                player_in_contact = level3_zombie.collides_with_list(self.player_list)
                 if player_in_contact:
-                    print("bruh")
+                    game_over_view = GameOverView()
+                    self.window.show_view(game_over_view)
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
@@ -241,8 +247,25 @@ class Chapter1View(arcade.View):
     def mouse_press(self, x, y, button, modifiers):
         pass
 
+
 class GameOverView(arcade.View):
-    pass
+    def __init__(self):
+        super().__init__()
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Game Over", 240, 400, arcade.color.BLACK, 54)
+        arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
+        # score_output = "Total Score: {}".format(self.score)
+        # arcade.draw_text(score_output, 10, 10, arcade.color.WHITE, 14)
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Chapter1View()
+        self.window.show_view(game_view)
+
 
 if __name__ == "__main__":
     """This section of code will allow you to run your View
