@@ -2,7 +2,6 @@ import arcade
 import math
 import random
 import settings
-import os
 
 
 class MenuView(arcade.View):
@@ -12,11 +11,12 @@ class MenuView(arcade.View):
     def on_draw(self):
         arcade.start_render()
         arcade.draw_text("Dodge the Zombies!!", settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text("Click to start", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text("Click anywhere to start", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         instructions_view = InstructionView()
         self.window.show_view(instructions_view)
+
 
 class InstructionView(arcade.View):
     def on_show(self):
@@ -30,6 +30,7 @@ class InstructionView(arcade.View):
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         chapter1_view = Chapter1View()
         self.window.show_view(chapter1_view)
+
 
 class Coin(arcade.Sprite):
     def reset_pos(self):
@@ -86,7 +87,6 @@ class Level3_Zombie(arcade.Sprite):
 
         if self.center_y > settings.HEIGHT or self.center_y < 0:
             self.change_y = -self.change_y
-
 
 
 class Player(arcade.Sprite):
@@ -212,8 +212,8 @@ class Chapter1View(arcade.View):
             for level2_zombie in self.level2_zombies:
                 level2_zombie.follow_player(self.player_sprite)
 
-            for level_2_zombie in self.level2_zombies:
-                player_in_contact = level_2_zombie.collides_with_list(self.player_list)
+            for zombie in self.level2_zombies:
+                player_in_contact = zombie.collides_with_list(self.player_list)
                 if player_in_contact:
                     game_over_view = GameOverView()
                     self.window.show_view(game_over_view)
