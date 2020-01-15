@@ -1,5 +1,6 @@
 import arcade
 import random
+
 WIDTH = 1000
 HEIGHT = 1000
 MOVEMENT_SPEED = 4
@@ -86,6 +87,8 @@ class GameOverView(arcade.View):
         arcade.start_render()
         arcade.draw_text("Game Over", 240, 400, arcade.color.BLACK, 54)
         arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
+        # score_output = "Total Score: {}".format(self.score)
+        # arcade.draw_text(score_output, 10, 10, arcade.color.WHITE, 14)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter1View()
@@ -93,20 +96,9 @@ class GameOverView(arcade.View):
 
 
 class Boulder(arcade.Sprite):
-    def spawn(self):
-        self.center_x = random.randrange(200, 800)
+    def reset_pos(self):
         self.center_y = 410
-
-    def update(self):
-        while self.change_x > 210:
-            self.center_y
-        if self.center_y == 210:
-            self.reset_pos()
-
-
-
-
-
+        self.center_x = random.randrange(100, 900)
 
 
 class Player(arcade.Sprite):
@@ -130,7 +122,7 @@ class Chapter1View(arcade.View):
         self.time = 30.00
 
         self.player_list = arcade.SpriteList()
-        self.player = Player("player.png", 0.02)
+        self.player = Player("zerotwo.jpg", 0.05)
         self.player.center_x = 100
         self.player.center_y = 100
 
@@ -146,6 +138,8 @@ class Chapter1View(arcade.View):
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY,
                                                              ladders=self.ladder_list)
+        self.boulder = Boulder("boulder.png", 0.03)
+        self.death_list.append(self.boulder)
 
     def on_draw(self):
         arcade.start_render()
@@ -160,6 +154,7 @@ class Chapter1View(arcade.View):
         self.wall_list.draw()
         self.ladder_list.draw()
         self.death_list.draw()
+        self.boulder.draw()
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
@@ -200,9 +195,9 @@ class Chapter1View(arcade.View):
             game_over_view = GameOverView()
             self.window.show_view(game_over_view)
 
-        if self.time <= 0:
-            game_over_view = GameOverView()
-            self.window.show_view(game_over_view)
+        self.boulder.center_y -= 5
+        if self.boulder.center_y <= 210:
+            self.boulder.reset_pos()
 
     def on_show(self):
         zombie_blood = arcade.Sprite("Blood.png", 0.2)
@@ -217,7 +212,7 @@ class Chapter1View(arcade.View):
         antibiotic.center_x = 930
         antibiotic.center_y = 440
 
-        poison = arcade.Sprite("poison.png", 0.2)
+        poison = arcade.Sprite("poison.jpg", 0.2)
         poison.center_x = 75
         poison.center_y = 640
 
