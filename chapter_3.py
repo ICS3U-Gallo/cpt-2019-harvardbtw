@@ -22,7 +22,7 @@ class Chapter3View(arcade.View):
         self.player = arcade.Sprite(center_x=WIDTH/2, center_y=0)
         self.player.texture = arcade.make_soft_circle_texture(100, arcade.color.ASH_GREY, outer_alpha=255)
 # Base
-        self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375)
+        self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375, scale=1)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
 # Gun
         self.gun = arcade.Sprite('Chapter 3 Sprites/gun.png', center_x=WIDTH/2, center_y=-15, scale=0.13)
@@ -60,8 +60,13 @@ class Chapter3View(arcade.View):
 
         if finish is False:
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
+        else:
+            arcade.draw_text("Mission Complete", 10, HEIGHT-40, arcade.color.WHITE, 30)
         if seconds >= 28:
-            arcade.draw_text(goal, WIDTH/2-150, HEIGHT-80, arcade.color.WHITE, 30)
+            arcade.draw_text(goal, WIDTH/2-200, HEIGHT-100, arcade.color.WHITE, 30)
+
+        if finish is True:
+            arcade.draw_text("Click Enter to Advance", WIDTH/2-190, 100, arcade.color.WHITE, 30)
 
     def update(self, delta_time):
         global finish
@@ -122,6 +127,27 @@ class Chapter3View(arcade.View):
         bullet.change_y = math.sin(angle) * bullet_speed
         self.bullets.append(bullet)
 
+    def on_key_press(self, key, _modifiers):
+        global finish
+        if finish is True:
+            if key == arcade.key.ENTER:
+                self.director.next_view()
+
+
+class InstructionView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.ORANGE_PEEL)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Instructions Screen", WIDTH/2, HEIGHT/2,
+                         arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to advance", WIDTH/2, HEIGHT/2-75,
+                         arcade.color.GRAY, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Chapter3View()
+        self.window.show_view(Chapter3View)
 
 if __name__ == "__main__":
     """This section of code will allow you to run your View
