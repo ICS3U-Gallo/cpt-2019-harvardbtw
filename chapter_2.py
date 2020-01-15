@@ -12,6 +12,88 @@ class Room:
     pass
 
 
+class MenuView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.BLACK)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Welcome to Part 2! ", WIDTH / 2, HEIGHT / 2,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to advance", WIDTH / 2, HEIGHT / 2 - 75,
+                         arcade.color.GRAY, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        instructions_view = InstructionView()
+        self.window.show_view(instructions_view)
+
+
+class InstructionView(arcade.View):
+    def __init__(self):
+        super().__init__()
+        self.item_list = arcade.SpriteList()
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.BLACK)
+
+        zombie_blood = arcade.Sprite("Blood.png", 0.2)
+        zombie_blood.center_x = 375
+        zombie_blood.center_y = HEIGHT / 2 + 10
+
+        vial = arcade.Sprite("Vial.png", 0.03)
+        vial.center_x = 425
+        vial.center_y = HEIGHT / 2 + 10
+
+        antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
+        antibiotic.center_x = 475
+        antibiotic.center_y = HEIGHT / 2 + 10
+
+        poison = arcade.Sprite("poison.png", 0.2)
+        poison.center_x = 525
+        poison.center_y = HEIGHT / 2 + 10
+
+        self.item_list.append(zombie_blood)
+        self.item_list.append(antibiotic)
+        self.item_list.append(vial)
+        self.item_list.append(poison)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Instructions", WIDTH / 2, 800,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to advance", WIDTH / 2, 700,
+                         arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text("Your task is to collect these:", 50, HEIGHT / 2,
+                         arcade.color.WHITE, font_size=20)
+        arcade.draw_text("Make it through the dungeon while avoiding these:", 50, HEIGHT / 2 - 100,
+                         arcade.color.WHITE, font_size=20)
+
+        self.item_list.draw()
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Chapter1View()
+        self.window.show_view(game_view)
+
+
+class GameOverView(arcade.View):
+    def __init__(self):
+        super().__init__()
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Game Over", 240, 400, arcade.color.BLACK, 54)
+        arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
+        # score_output = "Total Score: {}".format(self.score)
+        # arcade.draw_text(score_output, 10, 10, arcade.color.WHITE, 14)
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Chapter1View()
+        self.window.show_view(game_view)
+
+
 class Player(arcade.Sprite):
     def update(self):
         if self.left < 0:
@@ -99,7 +181,11 @@ class Chapter1View(arcade.View):
         for item in item_hit_list:
             item.remove_from_sprite_lists()
 
-    def on_show(self):
+        if arcade.check_for_collision_with_list(self.player, self.death_list):
+            game_over_view = GameOverView()
+            self.window.show_view(game_over_view)
+
+          def on_show(self):
         zombie_blood = arcade.Sprite("Blood.png", 0.2)
         zombie_blood.center_x = 930
         zombie_blood.center_y = 40
@@ -162,6 +248,8 @@ class Chapter1View(arcade.View):
 
 if __name__ == "__main__":
     window = arcade.Window(WIDTH, HEIGHT)
-    my_view = Chapter1View()
+    menu_view = MenuView()
+    window.show_view(menu_view)
+    my_view = menu_view
     window.show_view(my_view)
     arcade.run()
