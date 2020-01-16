@@ -144,7 +144,7 @@ class Chapter1View(arcade.View):
         super().__init__()
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
-        self.time = 30.00
+        self.time = 5
         self.score = 0
 
         self.coin_sprite_list = arcade.SpriteList()
@@ -177,7 +177,7 @@ class Chapter1View(arcade.View):
 
             self.level1_zombies.append(zombie)
 
-        for level2 in range(7):
+        for level2 in range(0):
             # zombie = arcade.Sprite()
             zombie = Level2_Zombie("Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
@@ -185,7 +185,7 @@ class Chapter1View(arcade.View):
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for level3 in range(2):
+        for level3 in range(0):
             zombie = Level3_Zombie("Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT - 50)
@@ -223,6 +223,10 @@ class Chapter1View(arcade.View):
     def update(self, delta_time):
         if self.time >= 0:
             self.time -= delta_time
+
+        elif self.time <= 0:
+            game_win_view = GameWinView()
+            self.window.show_view(game_win_view)
         # self.zombies.update()
         self.player_sprite.update()
         self.coin_sprite_list.update()
@@ -242,6 +246,7 @@ class Chapter1View(arcade.View):
                 game_over_view = GameOverView()
                 self.window.show_view(game_over_view)
 
+
         if self.time <= 20:
             for level2_zombie in self.level2_zombies:
                 level2_zombie.follow_player(self.player_sprite)
@@ -258,6 +263,7 @@ class Chapter1View(arcade.View):
                 if player_in_contact:
                     game_over_view = GameOverView()
                     self.window.show_view(game_over_view)
+
 
     def on_key_press(self, key, modifiers):
         # self.director.next_view()
@@ -281,8 +287,25 @@ class Chapter1View(arcade.View):
     def mouse_press(self, x, y, button, modifiers):
         pass
 
+
 class GameWinView(arcade.View):
-    pass
+    def __init__(self):
+        super().__init__()
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Congratulations, you won! You survived the", 80, 400, arcade.color.BLACK, 28)
+        arcade.draw_text("zombies long enough for rescue to arrive!", 80, 350, arcade.color.BLACK, 28)
+
+        arcade.draw_text("Click space to advance to the next chapter", 80, 300, arcade.color.BLACK, 24)
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.SPACE:
+            self.director.next_view()
+
 
 class GameOverView(arcade.View):
     def __init__(self):
