@@ -10,7 +10,8 @@ HEIGHT = 600
 
 
 class Chapter3View(arcade.View):
-    def on_show(self):
+    def __init__(self):
+        super().__init__()
         global finish, bullet_speed, background
         background = arcade.Sprite('Chapter 3 Sprites/background.jpg', center_x=WIDTH/2, center_y=HEIGHT/2, scale=1)
 
@@ -18,22 +19,20 @@ class Chapter3View(arcade.View):
         self.total_time = 31.0
         finish = False
 
-# Player
         self.player = arcade.Sprite(center_x=WIDTH/2, center_y=0)
         self.player.texture = arcade.make_soft_circle_texture(100, arcade.color.ASH_GREY, outer_alpha=255)
-# Base
+
         self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375, scale=1)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
-# Gun
+
         self.gun = arcade.Sprite('Chapter 3 Sprites/gun.png', center_x=WIDTH/2, center_y=-15, scale=0.13)
-# Red Dot
+
         self.mouse = arcade.Sprite(center_x=100, center_y=100)
         self.mouse.texture = arcade.make_soft_circle_texture(10, arcade.color.RED, outer_alpha=10)
-# Enemy
+
         self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
         self.enemies = arcade.SpriteList()        
-            
-# Bullet
+
         self.bullets = arcade.SpriteList()
         bullet_speed = 50
 
@@ -49,11 +48,12 @@ class Chapter3View(arcade.View):
         self.player.draw()
         self.mouse.draw()
 
-#Timer
         minutes = int(self.total_time) // 60
         seconds = int(self.total_time) % 60
         output = f"Time: {minutes:02d}:{seconds:02d}"
         goal = "Defend The Base"
+
+        arcade.draw_text("Press ESC To Pause", 600, HEIGHT-40, arcade.color.WHITE, 15)
 
         if seconds == 0:
             finish = True
@@ -62,8 +62,9 @@ class Chapter3View(arcade.View):
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
         else:
             arcade.draw_text("Mission Complete", 10, HEIGHT-40, arcade.color.WHITE, 30)
+        
         if seconds >= 28:
-            arcade.draw_text(goal, WIDTH/2-200, HEIGHT-100, arcade.color.WHITE, 30)
+            arcade.draw_text(goal, WIDTH/2-160, HEIGHT-100, arcade.color.WHITE, 30)
 
         if finish is True:
             arcade.draw_text("Click Enter to Advance", WIDTH/2-190, 100, arcade.color.WHITE, 30)
@@ -74,11 +75,9 @@ class Chapter3View(arcade.View):
         self.enemies.update()
         self.gun.update()
 
-# Update Timer
         if finish is False:
             self.total_time -= delta_time
 
-# Spawn Enemies
         if finish is False:
             if random.randrange(30) == 0:
                 enemy = arcade.Sprite()
@@ -88,8 +87,6 @@ class Chapter3View(arcade.View):
                 enemy.texture = self.enemy_texture
                 self.enemies.append(enemy)
                 
-
-# Update Bullet
         for enemy in self.enemies:
             bullets_in_contact = enemy.collides_with_list(self.bullets)
             if bullets_in_contact:  
@@ -98,8 +95,8 @@ class Chapter3View(arcade.View):
                     bullet.kill()
 
         for enemy in self.enemies:
-            bullets_in_contact = self.base.collides_with_list(self.enemies)
-            if bullets_in_contact:
+            base_in_contact = self.base.collides_with_list(self.enemies)
+            if base_in_contact:
                 enemy.kill()
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
@@ -132,22 +129,42 @@ class Chapter3View(arcade.View):
         if finish is True:
             if key == arcade.key.ENTER:
                 self.director.next_view()
+        if key == arcade.key.ESCAPE:
+            pause = PauseView(self)
+            self.window.show_view(pause)
 
 
-class InstructionView(arcade.View):
+class PauseView(arcade.View):
+    def __init__(self, game_view):
+        super().__init__()
+        self.game_view = game_view
+
     def on_show(self):
-        arcade.set_background_color(arcade.color.ORANGE_PEEL)
+        arcade.set_background_color(arcade.color.ORANGE)
 
     def on_draw(self):
-        arcade.start_render()
-        arcade.draw_text("Instructions Screen", WIDTH/2, HEIGHT/2,
-                         arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text("Click to advance", WIDTH/2, HEIGHT/2-75,
-                         arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text("PAUSED", WIDTH/2, HEIGHT/2+50,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = Chapter3View()
-        self.window.show_view(Chapter3View)
+        arcade.draw_text("Press Esc. to return",
+                         WIDTH/2,
+                         HEIGHT/2,
+                         arcade.color.WHITE,
+                         font_size=20,
+                         anchor_x="center")
+        arcade.draw_text("Press Enter to reset",
+                         WIDTH/2,
+                         HEIGHT/2-30,
+                         arcade.color.WHITE,
+                         font_size=20,
+                         anchor_x="center")
+
+    def on_key_press(self, key, _modifiers):
+        if key == arcade.key.ESCAPE:  
+            self.window.show_view(self.game_view)
+        elif key == arcade.key.ENTER:  
+            game = Chapter3View()
+            self.window.show_view(game)
 
 if __name__ == "__main__":
     """This section of code will allow you to run your View
