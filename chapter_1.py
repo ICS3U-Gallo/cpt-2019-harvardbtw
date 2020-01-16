@@ -39,14 +39,9 @@ class InstructionView(arcade.View):
 
 
 class Coin(arcade.Sprite):
-    def reset_pos(self):
+    def draw(self):
         self.center_y = random.randrange(settings.HEIGHT + 20, settings.HEIGHT + 100)
         self.center_x = random.randrange(settings.WIDTH)
-
-    def update(self):
-        # self.center_y -= 1
-        if self.top < 0:
-            self.reset_pos()
 
 
 class Level1_Zombie(arcade.Sprite):
@@ -168,7 +163,7 @@ class Chapter1View(arcade.View):
 
         level1_zombie_speed = [-2, 2]
 
-        level3_zombie_speed = [-8, 8]
+        level3_zombie_speed = [-6, 6]
 
         # self.gun_sound =
         # self.hit_sound =
@@ -190,10 +185,10 @@ class Chapter1View(arcade.View):
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for level3 in range(4):
+        for level3 in range(2):
             zombie = Level3_Zombie("Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
             zombie.center_x = random.randrange(0, settings.WIDTH)
-            zombie.center_y = random.randrange(settings.HEIGHT // 2, settings.HEIGHT)
+            zombie.center_y = random.randrange(settings.HEIGHT - 50)
             zombie.change_x = random.choice(level3_zombie_speed)
             zombie.change_y = random.choice(level3_zombie_speed)
 
@@ -286,6 +281,8 @@ class Chapter1View(arcade.View):
     def mouse_press(self, x, y, button, modifiers):
         pass
 
+class GameWinView(arcade.View):
+    pass
 
 class GameOverView(arcade.View):
     def __init__(self):
