@@ -30,7 +30,6 @@ class Chapter3View(arcade.View):
         self.mouse = arcade.Sprite(center_x=100, center_y=100)
         self.mouse.texture = arcade.make_soft_circle_texture(10, arcade.color.RED, outer_alpha=10)
 
-        self.enemy_texture = arcade.make_soft_circle_texture(50, arcade.color.GREEN, outer_alpha=255)
         self.enemies = arcade.SpriteList()        
 
         self.bullets = arcade.SpriteList()
@@ -80,11 +79,10 @@ class Chapter3View(arcade.View):
 
         if finish is False:
             if random.randrange(30) == 0:
-                enemy = arcade.Sprite()
+                enemy = arcade.Sprite('Chapter 3 Sprites/zombie.png')
                 enemy.center_x = random.randrange(50, WIDTH-50)
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
                 enemy.change_y = -3
-                enemy.texture = self.enemy_texture
                 self.enemies.append(enemy)
                 
         for enemy in self.enemies:
