@@ -79,7 +79,7 @@ class Chapter3View(arcade.View):
 
         if finish is False:
             if random.randrange(30) == 0:
-                enemy = arcade.Sprite('Chapter 3 Sprites/zombie.png')
+                enemy = arcade.Sprite('Chapter 3 Sprites/zombie.png', scale=0.3)
                 enemy.center_x = random.randrange(50, WIDTH-50)
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
                 enemy.change_y = -3
@@ -179,7 +179,7 @@ class GameoverView(arcade.View):
         arcade.draw_text("Game Over", WIDTH/2, HEIGHT/2+50,
                          arcade.color.RED, font_size=50, anchor_x="center")
 
-        arcade.draw_text("Press Enter to reset",
+        arcade.draw_text("Press Enter to Try Again",
                          WIDTH/2,
                          HEIGHT/2-30,
                          arcade.color.RED,
