@@ -22,6 +22,7 @@ class StartScreen(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         instructions_view = InstructionView()
+        instructions_view.director = self.director
         self.window.show_view(instructions_view)
 
 
@@ -36,6 +37,7 @@ class InstructionView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         chapter1_view = Chapter1View()
+        chapter1_view.director = self.director
         self.window.show_view(chapter1_view)
 
 
@@ -389,6 +391,11 @@ class Chapter1View(arcade.View):
         elif key == arcade.key.W or key == arcade.key.S:
             self.player_sprite.change_y = 0
 
+        if self.time == 0:
+            if key == arcade.key.ENTER:
+                self.director.next_view()
+
+
     def mouse_press(self, x, y, button, modifiers):
         pass
 
@@ -442,7 +449,6 @@ if __name__ == "__main__":
     from utils import FakeDirector
     window = arcade.Window(settings.WIDTH, settings.HEIGHT)
     my_view = StartScreen()
-    my_main_view = Chapter1View()
-    my_main_view.director = FakeDirector(close_on_next_view=True)
+    my_view.director = FakeDirector(close_on_next_view=True)
     window.show_view(my_view)
     arcade.run()
