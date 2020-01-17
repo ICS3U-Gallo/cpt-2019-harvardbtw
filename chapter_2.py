@@ -37,26 +37,36 @@ class InstructionView(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.BLACK)
 
-        zombie_blood = arcade.Sprite("Blood.png", 0.2)
+        zombie_blood = arcade.Sprite("Chapter 2 Sprites/Blood.png", 0.2)
         zombie_blood.center_x = 375
         zombie_blood.center_y = HEIGHT / 2 + 10
 
-        vial = arcade.Sprite("Vial.png", 0.03)
+        vial = arcade.Sprite("Chapter 2 Sprites/Vial.png", 0.03)
         vial.center_x = 425
         vial.center_y = HEIGHT / 2 + 10
 
-        antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
+        antibiotic = arcade.Sprite("Chapter 2 Sprites/Antibiotic.png", 0.03)
         antibiotic.center_x = 475
         antibiotic.center_y = HEIGHT / 2 + 10
 
-        poison = arcade.Sprite("poison.png", 0.2)
+        poison = arcade.Sprite("Chapter 2 Sprites/poison.png", 0.2)
         poison.center_x = 525
         poison.center_y = HEIGHT / 2 + 10
+
+        spike = arcade.Sprite("Chapter 2 Sprites/spike.png", 0.2)
+        spike.center_x = 600
+        spike.center_y = 400
+
+        boulder = arcade.Sprite("Chapter 2 Sprites/boulder.png", 0.03)
+        boulder.center_x = 650
+        boulder.center_y = 400
 
         self.item_list.append(zombie_blood)
         self.item_list.append(antibiotic)
         self.item_list.append(vial)
         self.item_list.append(poison)
+        self.item_list.append(spike)
+        self.item_list.append(boulder)
 
     def on_draw(self):
         arcade.start_render()
@@ -87,8 +97,6 @@ class GameOverView(arcade.View):
         arcade.start_render()
         arcade.draw_text("Game Over", 240, 400, arcade.color.BLACK, 54)
         arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
-        # score_output = "Total Score: {}".format(self.score)
-        # arcade.draw_text(score_output, 10, 10, arcade.color.WHITE, 14)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter1View()
@@ -97,8 +105,11 @@ class GameOverView(arcade.View):
 
 class Boulder(arcade.Sprite):
     def reset_pos(self):
-        self.center_y = 410
+        self.center_y = 380
         self.center_x = random.randrange(100, 900)
+
+    def update(self):
+        self.angle += self.change_angle
 
 
 class Player(arcade.Sprite):
@@ -118,11 +129,11 @@ class Chapter1View(arcade.View):
     def __init__(self):
         super().__init__()
         arcade.set_background_color(arcade.color.WHITE)
+
         self.physics_engine = None
         self.time = 30.00
-
         self.player_list = arcade.SpriteList()
-        self.player = Player("zerotwo.jpg", 0.05)
+        self.player = Player("Chapter 2 Sprites/zerotwo.jpg", 0.05)
         self.player.center_x = 100
         self.player.center_y = 100
 
@@ -135,14 +146,21 @@ class Chapter1View(arcade.View):
         self.wall_list = arcade.SpriteList()
         self.ladder_list = arcade.SpriteList()
         self.death_list = arcade.SpriteList()
+        self.platform_list = arcade.SpriteList()
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY,
                                                              ladders=self.ladder_list)
-        self.boulder = Boulder("boulder.png", 0.03)
+
+        self.boulder = Boulder("Chapter 2 Sprites/boulder.png", 0.07)
+        self.boulder.angle = random.randrange(360)
+        self.boulder.change_angle = random.randrange(-5, 6)
         self.death_list.append(self.boulder)
+        self.background = arcade.Sprite("Chapter 2 Sprites/background.jpg", 1, center_y=500, center_x=500, )
 
     def on_draw(self):
         arcade.start_render()
+
+        self.background.draw()
 
         minutes = int(self.time) // 60
         seconds = int(self.time) % 60
@@ -195,24 +213,25 @@ class Chapter1View(arcade.View):
             game_over_view = GameOverView()
             self.window.show_view(game_over_view)
 
-        self.boulder.center_y -= 5
-        if self.boulder.center_y <= 210:
+        self.boulder.center_y -= 3
+        if self.boulder.center_y <= 230:
             self.boulder.reset_pos()
+        self.death_list.update()
 
     def on_show(self):
-        zombie_blood = arcade.Sprite("Blood.png", 0.2)
+        zombie_blood = arcade.Sprite("Chapter 2 Sprites/Blood.png", 0.2)
         zombie_blood.center_x = 930
         zombie_blood.center_y = 40
 
-        vial = arcade.Sprite("Vial.png", 0.03)
+        vial = arcade.Sprite("Chapter 2 Sprites/Vial.png", 0.03)
         vial.center_x = 75
         vial.center_y = 240
 
-        antibiotic = arcade.Sprite("Antibiotic.png", 0.03)
+        antibiotic = arcade.Sprite("Chapter 2 Sprites/Antibiotic.png", 0.03)
         antibiotic.center_x = 930
         antibiotic.center_y = 440
 
-        poison = arcade.Sprite("poison.jpg", 0.2)
+        poison = arcade.Sprite("Chapter 2 Sprites/poison.png", 0.2)
         poison.center_x = 75
         poison.center_y = 640
 
@@ -224,37 +243,37 @@ class Chapter1View(arcade.View):
         for y in range(10, 1010, 200):
             if y == 210 or y == 610:
                 for x in range(0, 900, 64):
-                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall = arcade.Sprite("Chapter 2 Sprites/floor.png", 0.06)
                     wall.center_x = x
                     wall.center_y = y
                     self.wall_list.append(wall)
             elif y == 410 or y == 810:
                 for x in range(100, 1000, 64):
-                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall = arcade.Sprite("Chapter 2 Sprites/floor.png", 0.06)
                     wall.center_x = x
                     wall.center_y = y
                     self.wall_list.append(wall)
             else:
                 for x in range(0, 1000, 64):
-                    wall = arcade.Sprite("floor.png", 0.06)
+                    wall = arcade.Sprite("Chapter 2 Sprites/floor.png", 0.06)
                     wall.center_x = x
                     wall.center_y = y
                     self.wall_list.append(wall)
 
         for y in range(118, 618, 400):
-            ladder = arcade.Sprite("ladder.png", 0.35)
+            ladder = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.35)
             ladder.center_x = 980
             ladder.center_y = y
             self.ladder_list.append(ladder)
 
         for y in range(318, 817, 400):
-            ladder_2 = arcade.Sprite("ladder.png", 0.35)
+            ladder_2 = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.35)
             ladder_2.center_x = 20
             ladder_2.center_y = y
             self.ladder_list.append(ladder_2)
 
         for x in range(150, 900, 150):
-            spike = arcade.Sprite("spike.png", 0.2)
+            spike = arcade.Sprite("Chapter 2 Sprites/spike.png", 0.2)
             spike.center_x = x
             spike.center_y = 33
             self.death_list.append(spike)
