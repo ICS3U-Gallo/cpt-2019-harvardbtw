@@ -250,7 +250,7 @@ class Chapter1View(arcade.View):
         super().__init__()
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
-        self.time = 30.00
+        self.time = 5.00
         self.score = 0
 
         self.coin_sprite_list = arcade.SpriteList()
@@ -274,7 +274,7 @@ class Chapter1View(arcade.View):
         # self.gun_sound =
         # self.hit_sound =
 
-        for level1 in range(4):
+        for level1 in range(0):
             zombie = Level1_Zombie() # "Chapter1_Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = (settings.HEIGHT - 50)
@@ -283,7 +283,7 @@ class Chapter1View(arcade.View):
 
             self.level1_zombies.append(zombie)
 
-        for level2 in range(3):
+        for level2 in range(0):
             # zombie = arcade.Sprite()
             zombie = Level2_Zombie() # "Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
@@ -291,7 +291,7 @@ class Chapter1View(arcade.View):
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for level3 in range(2):
+        for level3 in range(0):
             zombie = Level3_Zombie() # Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT - 50)
