@@ -82,7 +82,7 @@ class InstructionView(arcade.View):
         self.item_list.draw()
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = Chapter1View()
+        game_view = Chapter2View()
         self.window.show_view(game_view)
 
 
@@ -99,8 +99,12 @@ class GameOverView(arcade.View):
         arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = Chapter1View()
+        game_view = Chapter2View()
         self.window.show_view(game_view)
+    
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.SPACE:
+            self.director.next_view()
 
 
 class Boulder(arcade.Sprite):
@@ -125,7 +129,7 @@ class Player(arcade.Sprite):
             self.top = HEIGHT - 1
 
 
-class Chapter1View(arcade.View):
+class Chapter2View(arcade.View):
     def __init__(self):
         super().__init__()
         arcade.set_background_color(arcade.color.WHITE)
@@ -133,7 +137,7 @@ class Chapter1View(arcade.View):
         self.physics_engine = None
         self.time = 30.00
         self.player_list = arcade.SpriteList()
-        self.player = Player("Chapter 2 Sprites/zerotwo.jpg", 0.05)
+        self.player = Player("Chapter 2 Sprites/player.png", 0.02)
         self.player.center_x = 100
         self.player.center_y = 100
 
@@ -280,6 +284,7 @@ class Chapter1View(arcade.View):
 
 
 if __name__ == "__main__":
+    from utils import FakeDirector
     window = arcade.Window(WIDTH, HEIGHT)
     menu_view = MenuView()
     window.show_view(menu_view)
