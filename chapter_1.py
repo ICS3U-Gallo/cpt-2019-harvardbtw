@@ -10,7 +10,8 @@ def load_texture_pair(filename):
         arcade.load_texture(filename, scale=settings.SPRITE_SCALING_PLAYER, mirrored=True)
     ]
 
-class MenuView(arcade.View):
+
+class StartScreen(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.WHITE)
 
@@ -45,11 +46,43 @@ class Coin(arcade.Sprite):
 
 
 class Level1_Zombie(arcade.Sprite):
-    def update(self):
+    def __init__(self):
+        super().__init__()
+
+        self.zombie_face_direction = settings.RIGHT_FACING
+        self.current_texture = 0
+
+        self.points = [[-22, -64], [22, -64], [22, 28], [-22, 28]]
+
+        main_path = ":resources:images/animated_characters/zombie/zombie"
+
+        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+
+        self.walk_textures = []
+        for i in range(8):
+            texture = load_texture_pair("{}_walk{}.png".format(main_path, i))
+            self.walk_textures.append(texture)
+
+    def update(self, delta_time: float = 1/60):
         # self.change_x = random.randrange(-2, 2)
         # self.change_y = random.randrange(-2, 2)
         self.center_x += self.change_x
         self.center_y += self.change_y
+
+        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+            self.zombie_face_direction = settings.LEFT_FACING
+        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+            self.zombie_face_direction = settings.RIGHT_FACING
+
+        if self.change_x == 0 and self.change_y == 0:
+            self.texture = self.idle_texture_pair[self.zombie_face_direction]
+            return
+
+        self.current_texture += 1
+        if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
+            self.current_texture = 0
+
+        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
 
         if self.center_x > settings.WIDTH or self.center_x < 0:
             self.change_x = -self.change_x
@@ -59,9 +92,28 @@ class Level1_Zombie(arcade.Sprite):
 
 
 class Level2_Zombie(arcade.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.zombie_face_direction = settings.RIGHT_FACING
+        self.current_texture = 0
+
+        self.points = [[-22, -64], [22, -64], [22, 28], [-22, 28]]
+
+        main_path = ":resources:images/animated_characters/zombie/zombie"
+
+        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+
+        self.walk_textures = []
+        for i in range(8):
+            texture = load_texture_pair("{}_walk{}.png".format(main_path, i))
+            self.walk_textures.append(texture)
+
     def follow_player(self, player_sprite):
         self.center_x += self.change_x
         self.center_y += self.change_y
+
+
 
         # if random.randrange(100) == 0:
         start_x = self.center_x
@@ -77,11 +129,64 @@ class Level2_Zombie(arcade.Sprite):
         self.change_x = math.cos(angle) * settings.LEVEL1_ZOMBIE_SPEED
         self.change_y = math.sin(angle) * settings.LEVEL1_ZOMBIE_SPEED
 
+        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+            self.zombie_face_direction = settings.LEFT_FACING
+        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+            self.zombie_face_direction = settings.RIGHT_FACING
+
+        if self.change_x == 0 and self.change_y == 0:
+            self.texture = self.idle_texture_pair[self.zombie_face_direction]
+            return
+
+        self.current_texture += 1
+        if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
+            self.current_texture = 0
+
+        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
+
+        if self.center_x > settings.WIDTH or self.center_x < 0:
+            self.change_x = -self.change_x
+
+        if self.center_y > settings.HEIGHT or self.center_y < 0:
+            self.change_y = -self.change_y
+
 
 class Level3_Zombie(arcade.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.zombie_face_direction = settings.RIGHT_FACING
+        self.current_texture = 0
+
+        self.points = [[-22, -64], [22, -64], [22, 28], [-22, 28]]
+
+        main_path = ":resources:images/animated_characters/zombie/zombie"
+
+        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+
+        self.walk_textures = []
+        for i in range(8):
+            texture = load_texture_pair("{}_walk{}.png".format(main_path, i))
+            self.walk_textures.append(texture)
+
     def update(self):
         self.center_x += self.change_x
         self.center_y += self.change_y
+
+        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+            self.zombie_face_direction = settings.LEFT_FACING
+        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+            self.zombie_face_direction = settings.RIGHT_FACING
+
+        if self.change_x == 0 and self.change_y == 0:
+            self.texture = self.idle_texture_pair[self.zombie_face_direction]
+            return
+
+        self.current_texture += 1
+        if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
+            self.current_texture = 0
+
+        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
 
         if self.center_x > settings.WIDTH or self.center_x < 0:
             self.change_x = -self.change_x
@@ -94,11 +199,12 @@ class Player(arcade.Sprite):
     def __init__(self):
         super().__init__()
         self.character_face_direction = settings.RIGHT_FACING
-        self.cur_texture = 0
+        self.current_texture = 0
 
+        # Adjusts player hitbox. Default image has too much empty space
         self.points = [[-22, -64], [22, -64], [22, 28], [-22, 28]]
 
-        main_path = ":resources:images/animated_characters/female_adventurer/femaleAdventurer"
+        main_path = ":resources:images/animated_characters/male_person/malePerson"
 
         self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
 
@@ -130,11 +236,11 @@ class Player(arcade.Sprite):
             self.texture = self.idle_texture_pair[self.character_face_direction]
             return
 
-        self.cur_texture += 1
-        if self.cur_texture > 7 * settings.UPDATES_PER_FRAME:
-            self.cur_texture = 0
+        self.current_texture += 1
+        if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
+            self.current_texture = 0
 
-        self.texture = self.walk_textures[self.cur_texture // settings.UPDATES_PER_FRAME][self.character_face_direction]
+        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.character_face_direction]
         self.center_x += self.change_x
         self.center_y += self.change_y
 
@@ -144,7 +250,7 @@ class Chapter1View(arcade.View):
         super().__init__()
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
-        self.time = 5
+        self.time = 30.00
         self.score = 0
 
         self.coin_sprite_list = arcade.SpriteList()
@@ -169,7 +275,7 @@ class Chapter1View(arcade.View):
         # self.hit_sound =
 
         for level1 in range(4):
-            zombie = Level1_Zombie("Chapter1_Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie = Level1_Zombie() # "Chapter1_Images\zombie_left.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = (settings.HEIGHT - 50)
             zombie.change_x = random.choice(level1_zombie_speed)
@@ -177,16 +283,16 @@ class Chapter1View(arcade.View):
 
             self.level1_zombies.append(zombie)
 
-        for level2 in range(0):
+        for level2 in range(3):
             # zombie = arcade.Sprite()
-            zombie = Level2_Zombie("Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
+            zombie = Level2_Zombie() # "Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = (settings.HEIGHT - 50)
             # zombie.texture = self.zombie_texture
             self.level2_zombies.append(zombie)
 
-        for level3 in range(0):
-            zombie = Level3_Zombie("Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE)
+        for level3 in range(2):
+            zombie = Level3_Zombie() # Chapter1_Images\zombie_right.png", settings.SPRITE_SCALING_ZOMBIE
             zombie.center_x = random.randrange(0, settings.WIDTH)
             zombie.center_y = random.randrange(settings.HEIGHT - 50)
             zombie.change_x = random.choice(level3_zombie_speed)
@@ -224,9 +330,9 @@ class Chapter1View(arcade.View):
         if self.time >= 0:
             self.time -= delta_time
 
-        elif self.time <= 0:
-            game_win_view = GameWinView()
-            self.window.show_view(game_win_view)
+        if self.time <= 0:
+            self.director.next_view()
+
         # self.zombies.update()
         self.player_sprite.update()
         self.coin_sprite_list.update()
@@ -245,7 +351,6 @@ class Chapter1View(arcade.View):
             if player_in_contact:
                 game_over_view = GameOverView()
                 self.window.show_view(game_over_view)
-
 
         if self.time <= 20:
             for level2_zombie in self.level2_zombies:
@@ -336,7 +441,8 @@ if __name__ == "__main__":
     """
     from utils import FakeDirector
     window = arcade.Window(settings.WIDTH, settings.HEIGHT)
-    my_view = MenuView()
-    my_view.director = FakeDirector(close_on_next_view=True)
+    my_view = StartScreen()
+    my_main_view = Chapter1View()
+    my_main_view.director = FakeDirector(close_on_next_view=True)
     window.show_view(my_view)
     arcade.run()
