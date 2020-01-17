@@ -19,8 +19,7 @@ class Chapter3View(arcade.View):
         self.total_time = 31.0
         finish = False
 
-        self.player = arcade.Sprite(center_x=WIDTH/2, center_y=0)
-        self.player.texture = arcade.make_soft_circle_texture(100, arcade.color.ASH_GREY, outer_alpha=255)
+        self.player = arcade.Sprite('Chapter 3 Sprites/player.png',center_x=WIDTH/2, center_y=0, scale=0.18)
 
         self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375, scale=1)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
