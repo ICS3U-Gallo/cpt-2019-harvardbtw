@@ -98,7 +98,9 @@ class Chapter3View(arcade.View):
             base_in_contact = self.base.collides_with_list(self.enemies)
             if base_in_contact:
                 enemy.kill()
-
+                gameover = GameoverView(self)
+                self.window.show_view(gameover)
+                
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
         self.mouse.center_y = y
@@ -165,6 +167,32 @@ class PauseView(arcade.View):
         elif key == arcade.key.ENTER:  
             game = Chapter3View()
             self.window.show_view(game)
+
+
+class GameoverView(arcade.View):
+    def __init__(self, game_view):
+        super().__init__()
+        self.game_view = game_view
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.ORANGE)
+
+    def on_draw(self):
+        arcade.draw_text("Game Over", WIDTH/2, HEIGHT/2+50,
+                         arcade.color.RED, font_size=50, anchor_x="center")
+
+        arcade.draw_text("Press Enter to reset",
+                         WIDTH/2,
+                         HEIGHT/2-30,
+                         arcade.color.RED,
+                         font_size=20,
+                         anchor_x="center")
+
+    def on_key_press(self, key, _modifiers):
+        if key == arcade.key.ENTER:  
+            game = Chapter3View()
+            self.window.show_view(game)
+
 
 if __name__ == "__main__":
     """This section of code will allow you to run your View
