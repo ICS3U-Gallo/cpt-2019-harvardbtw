@@ -19,7 +19,7 @@ class Chapter3View(arcade.View):
         self.total_time = 31.0
         finish = False
 
-        self.player = arcade.Sprite('Chapter 3 Sprites/player.png',center_x=WIDTH/2, center_y=0, scale=0.18)
+        self.player = arcade.Sprite('Chapter 3 Sprites/player.png', center_x=WIDTH/2, center_y=0, scale=0.18)
 
         self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375, scale=1)
         self.base.texture = arcade.make_soft_square_texture(WIDTH, arcade.color.BATTLESHIP_GREY, outer_alpha=255)
@@ -29,7 +29,7 @@ class Chapter3View(arcade.View):
         self.mouse = arcade.Sprite(center_x=100, center_y=100)
         self.mouse.texture = arcade.make_soft_circle_texture(10, arcade.color.RED, outer_alpha=10)
 
-        self.enemies = arcade.SpriteList()        
+        self.enemies = arcade.SpriteList()
 
         self.bullets = arcade.SpriteList()
         bullet_speed = 50
@@ -60,10 +60,8 @@ class Chapter3View(arcade.View):
             arcade.draw_text(output, 10, HEIGHT-40, arcade.color.WHITE, 30)
         else:
             arcade.draw_text("Mission Complete", 10, HEIGHT-40, arcade.color.WHITE, 30)
-        
         if seconds >= 28:
             arcade.draw_text(goal, WIDTH/2-160, HEIGHT-100, arcade.color.WHITE, 30)
-
         if finish is True:
             arcade.draw_text("Click Enter to Advance", WIDTH/2-190, 100, arcade.color.WHITE, 30)
 
@@ -83,10 +81,9 @@ class Chapter3View(arcade.View):
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
                 enemy.change_y = -3
                 self.enemies.append(enemy)
-                
         for enemy in self.enemies:
             bullets_in_contact = enemy.collides_with_list(self.bullets)
-            if bullets_in_contact:  
+            if bullets_in_contact:
                 enemy.kill()
                 for bullet in bullets_in_contact:
                     bullet.kill()
@@ -97,7 +94,7 @@ class Chapter3View(arcade.View):
                 enemy.kill()
                 gameover = GameoverView(self)
                 self.window.show_view(gameover)
-                
+
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
         self.mouse.center_y = y
@@ -114,7 +111,7 @@ class Chapter3View(arcade.View):
         bullet.center_x = WIDTH/2
         bullet.center_y = -10
 
-        x_diff = x - bullet.center_x 
+        x_diff = x - bullet.center_x
         y_diff = y - bullet.center_y
         angle = math.atan2(y_diff, x_diff)
 
@@ -159,9 +156,9 @@ class PauseView(arcade.View):
                          anchor_x="center")
 
     def on_key_press(self, key, _modifiers):
-        if key == arcade.key.ESCAPE:  
+        if key == arcade.key.ESCAPE:
             self.window.show_view(self.game_view)
-        elif key == arcade.key.ENTER:  
+        elif key == arcade.key.ENTER:
             game = Chapter3View()
             self.window.show_view(game)
 
@@ -186,7 +183,7 @@ class GameoverView(arcade.View):
                          anchor_x="center")
 
     def on_key_press(self, key, _modifiers):
-        if key == arcade.key.ENTER:  
+        if key == arcade.key.ENTER:
             game = Chapter3View()
             self.window.show_view(game)
 
