@@ -500,8 +500,6 @@ class Chapter4View(arcade.View):
     def on_draw(self):
         arcade.start_render()
 
-        self.background.draw()
-
         self.zm.attack_territory_fade()
         self.zm.display_zm()
         self.zm.display_health()
