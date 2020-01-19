@@ -8,6 +8,7 @@ WIDTH = 800
 HEIGHT = 600
 MOVEMENT_SPEED = [-2, -3, -4, -5]
 
+
 class Chapter3View(arcade.View):
     def __init__(self):
         super().__init__()
@@ -28,7 +29,6 @@ class Chapter3View(arcade.View):
 
         arcade.set_background_color(arcade.color.BLACK)
         self.total_time = 31.0
-
 
         self.player = arcade.Sprite(images[1],
                                     center_y=0,
@@ -70,13 +70,13 @@ class Chapter3View(arcade.View):
         minutes = int(self.total_time) // 60
         seconds = int(self.total_time) % 60
 
-        # Texts     
+        # Texts
         pause_display = "Press ESC To Pause"
         timer = f"Time: {minutes:02d}:{seconds:02d}"
         timer_ends = "Mission Complete"
         goal = "Defend The Base"
         end_msg = "Click Enter to Advance"
-        
+
         messages = [pause_display, timer, timer_ends, goal, end_msg]
 
         arcade.draw_text(messages[0],
@@ -126,11 +126,10 @@ class Chapter3View(arcade.View):
         global finish, images
         if finish is False:
             if random.randrange(30) == 0:
-                enemy = arcade.Sprite(images[3],
-                                     scale=0.3)
+                enemy = arcade.Sprite(images[3], scale=0.3)
                 enemy.center_x = random.randrange(50, WIDTH-50)
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
-                enemy.change_y = random.choice(MOVEMENT_SPEED) 
+                enemy.change_y = random.choice(MOVEMENT_SPEED)
                 self.enemies.append(enemy)
 
     def collision(self):
@@ -147,7 +146,7 @@ class Chapter3View(arcade.View):
                 enemy.kill()
                 gameover = GameoverView(self)
                 self.window.show_view(gameover)
-            
+
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
         self.mouse.center_y = y
@@ -184,7 +183,7 @@ class Chapter3View(arcade.View):
             pause = PauseView(self)
             self.window.show_view(pause)
 
-    
+
 class PauseView(arcade.View):
     def __init__(self, game_view):
         super().__init__()
