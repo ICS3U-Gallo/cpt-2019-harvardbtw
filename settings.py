@@ -2,11 +2,17 @@ import random
 WIDTH = 800
 HEIGHT = 600
 
+# Sprite Speeds
 LEVEL1_ZOMBIE_SPEED = [-2, 2]
 LEVEL2_ZOMBIE_SPEED = random.randrange(1, 3)
 LEVEL3_ZOMBIE_SPEED = [-6, 6]
 PLAYER_SPEED = 4
+
+# Sets amount of sprites to draw
 COIN_COUNT = 120
+LEVEL1_ZOMBIE_COUNT = 2
+LEVEL2_ZOMBIE_COUNT = 3
+LEVEL3_ZOMBIE_COUNT = 1
 
 # Sprite Scaling
 SPRITE_SCALING_COIN = 0.2
