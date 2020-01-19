@@ -100,7 +100,7 @@ class Chapter3View(arcade.View):
                              HEIGHT-40,
                              arcade.color.WHITE,
                              30)
-        if seconds >= 28:
+        if seconds >= 28 and seconds <= 31:
             arcade.draw_text(messages[3],
                              WIDTH/2-160,
                              HEIGHT-100,
