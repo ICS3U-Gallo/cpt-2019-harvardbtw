@@ -1,9 +1,17 @@
-# Program Title (replace)
-Program description. Replace with description of your program. Give a description of each scene.
+# The Zombie Apocalypse
+Chapter 1:
+
+Chapter 2:
+
+Chapter 3: You are to defend the base from incoming zombies by shooting them. You have one life and one life only. If a zombie were to reach your base, it is gameover. You will have to defend the base for 30 seconds. When the timer hits zero, you will have the ability to advance to the next chapter.
+
+Chapter 4: 
 
 ### Group Members:
-- Member1
-- Member2
+- Danny Lu
+- Nathan Lai
+- Clarence Corpuz
+- Patrick Wu
 
 
 # CPT 2019
