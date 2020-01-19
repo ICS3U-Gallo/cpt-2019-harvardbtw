@@ -127,7 +127,7 @@ class Chapter3View(arcade.View):
     def spawn_enemy(self):
         global finish, images
         if finish is False:
-            if random.randrange(30) == 0:
+            if random.randrange(40) == 0:
                 enemy = arcade.Sprite(images[3], scale=0.3)
                 enemy.center_x = random.randrange(50, WIDTH-50)
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
