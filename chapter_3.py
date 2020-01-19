@@ -120,7 +120,7 @@ class Chapter3View(arcade.View):
         self.gun.update()
         self.spawn_enemy()
         self.collision()
-        
+
         if finish is False:
             self.total_time -= delta_time
 
