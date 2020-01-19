@@ -2,7 +2,9 @@ import random
 WIDTH = 800
 HEIGHT = 600
 
-LEVEL1_ZOMBIE_SPEED = random.randrange(1, 3)
+LEVEL1_ZOMBIE_SPEED = [-2, 2]
+LEVEL2_ZOMBIE_SPEED = random.randrange(1, 3)
+LEVEL3_ZOMBIE_SPEED = [-6, 6]
 PLAYER_SPEED = 4
 COIN_COUNT = 120
 
