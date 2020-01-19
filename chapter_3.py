@@ -1,37 +1,46 @@
 import arcade
 import random
 import math
-import os
 import settings
 
 
 WIDTH = 800
 HEIGHT = 600
-
+MOVEMENT_SPEED = [-2, -3, -4, -5]
 
 class Chapter3View(arcade.View):
     def __init__(self):
         super().__init__()
-        global finish, bullet_speed, background
-        background = arcade.Sprite('Chapter 3 Sprites/background.jpg',
+        global finish, bullet_speed, background, images
+
+        # Sprite Images
+        background_image = 'Chapter 3 Sprites/background.jpg'
+        player_image = 'Chapter 3 Sprites/player.png'
+        gun_image = 'Chapter 3 Sprites/gun.png'
+        enemy_image = 'Chapter 3 Sprites/zombie.png'
+
+        images = [background_image, player_image, gun_image, enemy_image]
+
+        background = arcade.Sprite(images[0],
                                    center_x=WIDTH/2,
                                    center_y=HEIGHT/2,
                                    scale=1)
 
         arcade.set_background_color(arcade.color.BLACK)
         self.total_time = 31.0
-        finish = False
 
-        self.player = arcade.Sprite('Chapter 3 Sprites/player.png',
+
+        self.player = arcade.Sprite(images[1],
                                     center_y=0,
                                     scale=0.18)
 
         self.base = arcade.Sprite(center_x=WIDTH/2, center_y=-375, scale=1)
+        base_color = arcade.color.BATTLESHIP_GREY
         self.base.texture = arcade.make_soft_square_texture(WIDTH,
-                                                            arcade.color.BATTLESHIP_GREY,
+                                                            base_color,
                                                             outer_alpha=255)
 
-        self.gun = arcade.Sprite('Chapter 3 Sprites/gun.png',
+        self.gun = arcade.Sprite(images[2],
                                  center_x=WIDTH/2,
                                  center_y=-15,
                                  scale=0.13)
@@ -60,11 +69,17 @@ class Chapter3View(arcade.View):
 
         minutes = int(self.total_time) // 60
         seconds = int(self.total_time) % 60
-        output = f"Time: {minutes:02d}:{seconds:02d}"
-        goal = "Defend The Base"
+
+        # Texts     
+        pause_display = "Press ESC To Pause"
+        timer = f"Time: {minutes:02d}:{seconds:02d}"
         timer_ends = "Mission Complete"
+        goal = "Defend The Base"
         end_msg = "Click Enter to Advance"
-        arcade.draw_text("Press ESC To Pause",
+        
+        messages = [pause_display, timer, timer_ends, goal, end_msg]
+
+        arcade.draw_text(messages[0],
                          600,
                          HEIGHT-40,
                          arcade.color.WHITE,
@@ -74,25 +89,25 @@ class Chapter3View(arcade.View):
             finish = True
 
         if finish is False:
-            arcade.draw_text(output,
+            arcade.draw_text(messages[1],
                              10,
                              HEIGHT-40,
                              arcade.color.WHITE,
                              30)
         else:
-            arcade.draw_text(timer_ends,
+            arcade.draw_text(messages[2],
                              10,
                              HEIGHT-40,
                              arcade.color.WHITE,
                              30)
         if seconds >= 28:
-            arcade.draw_text(goal,
+            arcade.draw_text(messages[3],
                              WIDTH/2-160,
                              HEIGHT-100,
                              arcade.color.WHITE,
                              30)
         if finish is True:
-            arcade.draw_text(end_msg,
+            arcade.draw_text(messages[4],
                              WIDTH/2-190,
                              100,
                              arcade.color.WHITE,
@@ -107,14 +122,18 @@ class Chapter3View(arcade.View):
         if finish is False:
             self.total_time -= delta_time
 
+    def spawn_enemy(self):
+        global finish, images
         if finish is False:
             if random.randrange(30) == 0:
-                enemy = arcade.Sprite('Chapter 3 Sprites/zombie.png',
-                                      scale=0.3)
+                enemy = arcade.Sprite(images[3],
+                                     scale=0.3)
                 enemy.center_x = random.randrange(50, WIDTH-50)
                 enemy.center_y = random.randrange(HEIGHT+50, HEIGHT*2)
-                enemy.change_y = -3
+                enemy.change_y = random.choice(MOVEMENT_SPEED) 
                 self.enemies.append(enemy)
+
+    def collision(self):
         for enemy in self.enemies:
             bullets_in_contact = enemy.collides_with_list(self.bullets)
             if bullets_in_contact:
@@ -128,11 +147,12 @@ class Chapter3View(arcade.View):
                 enemy.kill()
                 gameover = GameoverView(self)
                 self.window.show_view(gameover)
-
+            
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         self.mouse.center_x = x
         self.mouse.center_y = y
 
+        # Allow gun to follow the direction of mouse
         self.gun.height = 300
         x_diff = x - self.gun.center_x
         y_diff = y - self.gun.center_y
@@ -145,6 +165,7 @@ class Chapter3View(arcade.View):
         bullet.center_x = WIDTH/2
         bullet.center_y = -10
 
+        # Bullet facing at an angle
         x_diff = x - bullet.center_x
         y_diff = y - bullet.center_y
         angle = math.atan2(y_diff, x_diff)
