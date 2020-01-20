@@ -225,6 +225,7 @@ class Chapter2View(arcade.View):
         self.death_list.append(self.boulder)
 
         self.zombie = arcade.Sprite("Chapter 2 Sprites/zombie.png", 0.3)
+        self.zombie_health = 30
         self.water_gun = arcade.Sprite("Chapter 2 Sprites/raygun.png", 0.15)
         self.background = arcade.Sprite("Chapter 2 Sprites/background.jpg", 1, center_y=500, center_x=500, )
 
@@ -408,9 +409,12 @@ class Chapter2View(arcade.View):
             self.window.show_view(game_over_view)
 
         zombie_hit = arcade.check_for_collision_with_list(self.zombie, self.player_bullet_list)
+        if zombie_hit:
+            self.zombie_health -= 1
         for item in zombie_hit:
             self.player_bullet_list.remove(item)
-            self.zombie.kill()
+            if self.zombie_health == 0:
+                self.zombie.kill()
 
     def zombie_shoot(self):
         self.frame_count += 1
