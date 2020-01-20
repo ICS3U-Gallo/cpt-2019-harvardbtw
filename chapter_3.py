@@ -32,6 +32,7 @@ class Chapter3View(arcade.View):
         self.total_time = 31.0
 
         self.player = arcade.Sprite(images[1],
+                                    center_x=WIDTH/2,
                                     center_y=0,
                                     scale=0.18)
 
