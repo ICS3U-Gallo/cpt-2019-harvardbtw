@@ -12,8 +12,8 @@ MOVEMENT_SPEED = [-2, -3, -4, -5]
 class Chapter3View(arcade.View):
     def __init__(self):
         super().__init__()
-        global finish, bullet_speed, background, images
-        finish = False
+        global bullet_speed, background, images
+        self.finish = False
 
         # Sprite Images
         background_image = 'Chapter 3 Sprites/background.jpg'
@@ -58,7 +58,6 @@ class Chapter3View(arcade.View):
         bullet_speed = 50
 
     def on_draw(self):
-        global finish
         arcade.start_render()
 
         background.draw()
@@ -88,9 +87,9 @@ class Chapter3View(arcade.View):
                          15)
 
         if seconds == 0:
-            finish = True
+            self.finish = True
 
-        if finish is False:
+        if self.finish is False:
             arcade.draw_text(messages[1],
                              10,
                              HEIGHT-40,
@@ -108,7 +107,7 @@ class Chapter3View(arcade.View):
                              HEIGHT-100,
                              arcade.color.WHITE,
                              30)
-        if finish is True:
+        if self.finish is True:
             arcade.draw_text(messages[4],
                              WIDTH/2-190,
                              100,
@@ -116,19 +115,18 @@ class Chapter3View(arcade.View):
                              30)
 
     def update(self, delta_time):
-        global finish
         self.bullets.update()
         self.enemies.update()
         self.gun.update()
         self.spawn_enemy()
         self.collision()
 
-        if finish is False:
+        if self.finish is False:
             self.total_time -= delta_time
 
     def spawn_enemy(self):
-        global finish, images
-        if finish is False:
+        global images
+        if self.finish is False:
             if random.randrange(40) == 0:
                 enemy = arcade.Sprite(images[3], scale=0.3)
                 enemy.center_x = random.randrange(50, WIDTH-50)
@@ -179,8 +177,7 @@ class Chapter3View(arcade.View):
         self.bullets.append(bullet)
 
     def on_key_press(self, key, _modifiers):
-        global finish
-        if finish is True:
+        if self.finish is True:
             if key == arcade.key.ENTER:
                 self.director.next_view()
         if key == arcade.key.ESCAPE:
