@@ -1,5 +1,5 @@
 # The Zombie Apocalypse
-Chapter 1:
+Chapter 1: The zombie apocalypse just broke out and you must survive until rescue arrives. There will be 3 waves of zombies in which each wave has their own unique traits. The 1st wave of zombies walk around aimlessly, the 2nd wave follow you around but are slow, and the last wave is able to run but doesn't follow you. Surviving for 30 seconds will allow you to advance to the next chapter.
 
 Chapter 2:
 
