@@ -81,10 +81,6 @@ class InstructionView(arcade.View):
         bullet.center_x = 700
         bullet.center_y = 200
 
-        ball = arcade.Sprite("Chapter 2 Sprites/spikeballs.png", 0.6)
-        ball.center_x = 650
-        ball.center_y = 200
-
         zombie = arcade.Sprite("Chapter 2 Sprites/zombie.png", 0.3)
         zombie.center_x = 500
         zombie.center_y = 200
@@ -100,7 +96,6 @@ class InstructionView(arcade.View):
         self.item_list.append(spike)
         self.item_list.append(boulder)
         self.item_list.append(bullet)
-        self.item_list.append(ball)
         self.item_list.append(zombie)
         self.item_list.append(gun)
 
@@ -187,7 +182,6 @@ class Player(arcade.Sprite):
             self.bottom = 0
         elif self.top > HEIGHT - 1:
             self.top = HEIGHT - 1
-
 
 class Chapter2View(arcade.View):
     def __init__(self):
@@ -396,7 +390,7 @@ class Chapter2View(arcade.View):
     def collisions(self):
         item_hit_list = arcade.check_for_collision_with_list(self.player, self.item_list)
         for item in item_hit_list:
-            item.remove_from_sprite_lists()
+            self.item_list.remove(item)
 
         if arcade.check_for_collision_with_list(self.player, self.death_list) or self.time < 0:
             game_over_view = GameOverView()
@@ -404,7 +398,7 @@ class Chapter2View(arcade.View):
 
         zombie_hit = arcade.check_for_collision_with_list(self.zombie, self.player_bullet_list)
         for item in zombie_hit:
-            item.remove_from_sprite_lists()
+            self.player_bullet_list.remove(item)
             self.zombie.kill()
 
     def zombie_shoot(self):
