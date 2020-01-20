@@ -448,7 +448,7 @@ class Chapter2View(arcade.View):
 if __name__ == "__main__":
     from utils import FakeDirector
     window = arcade.Window(WIDTH, HEIGHT)
-    menu_view = MenuView()
+    menu_view = Start()
     window.show_view(menu_view)
     my_view = menu_view
     window.show_view(my_view)
