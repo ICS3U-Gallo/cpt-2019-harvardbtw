@@ -132,12 +132,18 @@ class WinView(arcade.View):
         arcade.start_render()
         arcade.draw_text("YOU WIN!", WIDTH / 2, 530,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Press space for the next minigame!", WIDTH / 2, 470,
+        arcade.draw_text("Press space for the next minigame!", WIDTH / 2, 370,
+                         arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text("Click to play again!", WIDTH / 2, 470,
                          arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
             self.director.next_view()
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Chapter2View()
+        self.window.show_view(game_view)
 
 
 class GameOverView(arcade.View):
@@ -182,6 +188,7 @@ class Player(arcade.Sprite):
             self.bottom = 0
         elif self.top > HEIGHT - 1:
             self.top = HEIGHT - 1
+
 
 class Chapter2View(arcade.View):
     def __init__(self):
@@ -245,6 +252,8 @@ class Chapter2View(arcade.View):
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
             self.up_pressed = True
+        elif key == arcade.key.S:
+            self.down_pressed = True
         elif key == arcade.key.A:
             self.left_pressed = True
         elif key == arcade.key.D:
@@ -253,6 +262,8 @@ class Chapter2View(arcade.View):
     def on_key_release(self, key, modifiers):
         if key == arcade.key.W:
             self.up_pressed = False
+        elif key == arcade.key.S:
+            self.down_pressed = False
         elif key == arcade.key.A:
             self.left_pressed = False
         elif key == arcade.key.D:
