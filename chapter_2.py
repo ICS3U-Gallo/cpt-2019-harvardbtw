@@ -230,7 +230,7 @@ class Chapter2View(arcade.View):
         self.death_list.append(self.boulder)
 
         self.zombie = arcade.Sprite("Chapter 2 Sprites/zombie.png", 0.3)
-        self.zombie_health = 30
+        self.zombie_health = 12
         self.water_gun = arcade.Sprite("Chapter 2 Sprites/raygun.png", 0.15)
         self.background = arcade.Sprite("Chapter 2 Sprites/background.jpg", 1, center_y=500, center_x=500, )
 
