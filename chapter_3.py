@@ -29,7 +29,7 @@ class Chapter3View(arcade.View):
                                    scale=1)
 
         arcade.set_background_color(arcade.color.BLACK)
-        self.total_time = 31.0
+        self.total_time = 3.0
 
         self.player = arcade.Sprite(images[1],
                                     center_x=WIDTH/2,
