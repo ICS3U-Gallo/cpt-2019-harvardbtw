@@ -4,7 +4,7 @@ import settings
 
 from menu import MenuView
 from chapter_1 import StartScreen
-from chapter_2 import Chapter2View
+from chapter_2 import Start
 from chapter_3 import Chapter3View
 from chapter_4 import Chapter4View
 
@@ -17,7 +17,7 @@ class Director(arcade.Window):
         self.views = [
             MenuView,
             StartScreen,
-            Chapter2View,
+            Start,
             Chapter3View,
             Chapter4View
         ]
