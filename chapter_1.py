@@ -309,7 +309,7 @@ class Chapter1View(arcade.View):
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
         # Creates game timer and sets it to 30 seconds
-        self.time = 5
+        self.time = 30.00
 
         # Creates score counter
         self.score = 0
