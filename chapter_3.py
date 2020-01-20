@@ -14,7 +14,7 @@ class Chapter3View(arcade.View):
         super().__init__()
         global finish, bullet_speed, background, images
         finish = False
-        
+
         # Sprite Images
         background_image = 'Chapter 3 Sprites/background.jpg'
         player_image = 'Chapter 3 Sprites/player.png'
