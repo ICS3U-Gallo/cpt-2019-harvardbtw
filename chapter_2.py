@@ -9,6 +9,7 @@ GRAVITY = 0.7
 PLAYER_JUMP_SPEED = 12
 
 
+# Start Screen
 class Start(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -26,6 +27,7 @@ class Start(arcade.View):
         self.window.show_view(story_view)
 
 
+# Story of the game up to now
 class StoryView(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -48,6 +50,7 @@ class StoryView(arcade.View):
         self.window.show_view(instructions_view)
 
 
+# Instructions screen
 class InstructionView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -126,6 +129,7 @@ class InstructionView(arcade.View):
         self.window.show_view(game_view)
 
 
+# Win screen
 class WinView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -152,6 +156,7 @@ class WinView(arcade.View):
         self.window.show_view(game_view)
 
 
+# Game over screen
 class GameOverView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -176,6 +181,7 @@ class GameOverView(arcade.View):
             self.director.next_view()
 
 
+# Reset boulder position
 class Boulder(arcade.Sprite):
     def reset_pos(self):
         self.center_y = 280
@@ -187,6 +193,7 @@ class Boulder(arcade.Sprite):
 
 class Player(arcade.Sprite):
     def update(self):
+        # Player boundaries
         if self.left < 0:
             self.left = 0
         elif self.right > WIDTH - 1:
@@ -204,6 +211,7 @@ class Chapter2View(arcade.View):
 
         arcade.set_background_color(arcade.color.WHITE)
 
+        # Initialize some variables
         self.physics_engine = None
         self.time = 30.00
         self.frame_count = 0
@@ -217,6 +225,7 @@ class Chapter2View(arcade.View):
         self.up_pressed = False
         self.down_pressed = False
 
+        # Create lists for sprites
         self.item_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
         self.ladder_list = arcade.SpriteList()
@@ -227,6 +236,8 @@ class Chapter2View(arcade.View):
         self.physics_engine = \
             arcade.PhysicsEnginePlatformer(self.player, self.wall_list,
                                            GRAVITY, ladders=self.ladder_list)
+
+        # Rotation of the boulder
         self.boulder = Boulder("Chapter 2 Sprites/boulder.png", 0.03)
         self.boulder.angle = random.randrange(360)
         self.boulder.change_angle = random.randrange(-10, 10)
@@ -249,6 +260,7 @@ class Chapter2View(arcade.View):
         arcade.draw_text(output, WIDTH - 175, HEIGHT - 30, arcade.color.BLACK,
                          24)
 
+        # Draw all sprites
         self.player.draw()
         self.item_list.draw()
         self.wall_list.draw()
@@ -259,6 +271,7 @@ class Chapter2View(arcade.View):
         self.enemy_bullet_list.draw()
 
     def on_key_press(self, key, modifiers):
+        # Player movement when key is pressed
         if key == arcade.key.W:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
@@ -271,6 +284,7 @@ class Chapter2View(arcade.View):
             self.right_pressed = True
 
     def on_key_release(self, key, modifiers):
+        # Stops movement once key is released
         if key == arcade.key.W:
             self.up_pressed = False
         elif key == arcade.key.S:
@@ -281,6 +295,7 @@ class Chapter2View(arcade.View):
             self.right_pressed = False
 
     def on_mouse_press(self, x, y, button, key_modifiers):
+        # Checks if gun has been picked up and creates bullets if it is
         if self.water_gun not in self.item_list:
             bullet_speed = 30
             bullet = arcade.Sprite('Chapter 2 Sprites/bullet1.png', scale=0.2)
@@ -299,6 +314,7 @@ class Chapter2View(arcade.View):
             pass
 
     def items(self):
+        # Sets up items to collect
         zombie_blood = arcade.Sprite("Chapter 2 Sprites/Blood.png", 0.2)
         zombie_blood.center_x = 730
         zombie_blood.center_y = 30
@@ -325,6 +341,7 @@ class Chapter2View(arcade.View):
         self.item_list.append(self.water_gun)
 
     def walls(self):
+        # Walls and ladders
         for y in range(0, 600, 150):
             if y == 150 or y == 450:
                 for x in range(0, 710, 64):
@@ -357,6 +374,7 @@ class Chapter2View(arcade.View):
         self.ladder_list.append(ladder_2)
 
     def obstacles(self):
+        # Obstacles
         for x in range(150, 750, 150):
             spike = arcade.Sprite("Chapter 2 Sprites/spike.png", 0.2)
             spike.center_x = x
@@ -378,11 +396,13 @@ class Chapter2View(arcade.View):
         self.death_list.append(self.zombie)
 
     def on_show(self):
+        # Show items, walls and obstacles
         self.items()
         self.walls()
         self.obstacles()
 
     def update(self, delta_time):
+        # Decrease time
         self.time -= delta_time
 
         self.player.change_x = 0
@@ -391,10 +411,12 @@ class Chapter2View(arcade.View):
         elif self.right_pressed and not self.left_pressed:
             self.player.change_x = MOVEMENT_SPEED
 
+        # Boulder movement and reset position
         self.boulder.center_y -= 2
         if self.boulder.center_y <= 180:
             self.boulder.reset_pos()
 
+        # update sprites
         self.enemy_bullet_list.update()
         self.death_list.update()
         self.player.update()
@@ -405,33 +427,42 @@ class Chapter2View(arcade.View):
         self.collisions()
         self.zombie_shoot()
 
+        # check if all items have been collected to win the game
         if len(self.item_list) == 0:
             game_win = WinView()
             game_win.director = self.director
             self.window.show_view(game_win)
 
     def collisions(self):
+        # Check if player collides with item
         item_hit_list = arcade.check_for_collision_with_list(self.player,
                                                              self.item_list)
+        # Remove item from list
         for item in item_hit_list:
             self.item_list.remove(item)
 
+        # Check if player collides with obstacle
         if arcade.check_for_collision_with_list(
                 self.player, self.death_list) or self.time < 0:
             game_over_view = GameOverView()
             game_over_view.director = self.director
             self.window.show_view(game_over_view)
 
+        # Check if zombie collides with bullet
         zombie_hit = arcade.check_for_collision_with_list(
             self.zombie,
             self.player_bullet_list)
         if zombie_hit:
             self.zombie_health -= 1
+
+        # Remove bullet from list once it hits zombie
+        # Checks if zombie has no health and removes it from all lists
         for item in zombie_hit:
             self.player_bullet_list.remove(item)
             if self.zombie_health == 0:
                 self.zombie.kill()
 
+    # Zombie shooting
     def zombie_shoot(self):
         self.frame_count += 1
         if self.zombie in self.death_list:
@@ -446,7 +477,6 @@ class Chapter2View(arcade.View):
 
 
 if __name__ == "__main__":
-
     from utils import FakeDirector
     window = arcade.Window(WIDTH, HEIGHT)
     my_view = Start()
