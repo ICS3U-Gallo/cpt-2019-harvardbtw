@@ -6,9 +6,10 @@ import settings
 
 # Function to load the required images from the arcade resources folder
 def load_texture_pair(filename):
+    player_scaling = settings.SPRITE_SCALING_PLAYER
     return [
-        arcade.load_texture(filename, scale=settings.SPRITE_SCALING_PLAYER),
-        arcade.load_texture(filename, scale=settings.SPRITE_SCALING_PLAYER, mirrored=True)
+        arcade.load_texture(filename, scale=player_scaling),
+        arcade.load_texture(filename, scale=player_scaling, mirrored=True)
     ]
 
 
@@ -19,8 +20,12 @@ class StartScreen(arcade.View):
     def on_draw(self):
         arcade.start_render()
         title = "Dodge the Zombies"
-        arcade.draw_text(title, settings.WIDTH/2, settings.HEIGHT/2, arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text("Press Enter to read the instructions", settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
+        text = "Press Enter to read the instructions"
+        x1 = settings.WIDTH/2
+        y1 = settings.HEIGHT/2
+
+        arcade.draw_text(title, x1, y1, arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text(text, settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         instructions_view = InstructionView()
