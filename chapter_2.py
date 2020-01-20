@@ -9,7 +9,7 @@ GRAVITY = 0.7
 PLAYER_JUMP_SPEED = 12
 
 
-class MenuView(arcade.View):
+class Start(arcade.View):
     def on_show(self):
         arcade.set_background_color(arcade.color.BLACK)
 
@@ -22,6 +22,7 @@ class MenuView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         story_view = StoryView()
+        story_view.director = self.director
         self.window.show_view(story_view)
 
 
@@ -42,6 +43,7 @@ class StoryView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         instructions_view = InstructionView()
+        instructions_view.director = self.director
         self.window.show_view(instructions_view)
 
 
@@ -118,6 +120,7 @@ class InstructionView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter2View()
+        game_view.director = self.director
         self.window.show_view(game_view)
 
 
@@ -143,6 +146,7 @@ class WinView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter2View()
+        game_view.director = self.director
         self.window.show_view(game_view)
 
 
@@ -161,6 +165,7 @@ class GameOverView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter2View()
+        game_view.director = self.director
         self.window.show_view(game_view)
 
     def on_key_press(self, key, modifiers):
@@ -397,6 +402,7 @@ class Chapter2View(arcade.View):
 
         if len(self.item_list) == 0:
             game_win = WinView()
+            game_win.director = self.director
             self.window.show_view(game_win)
 
     def collisions(self):
@@ -406,6 +412,7 @@ class Chapter2View(arcade.View):
 
         if arcade.check_for_collision_with_list(self.player, self.death_list) or self.time < 0:
             game_over_view = GameOverView()
+            game_over_view.director = self.director
             self.window.show_view(game_over_view)
 
         zombie_hit = arcade.check_for_collision_with_list(self.zombie, self.player_bullet_list)
