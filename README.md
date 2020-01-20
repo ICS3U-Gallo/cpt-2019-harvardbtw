@@ -1,7 +1,7 @@
 # The Zombie Apocalypse
 Chapter 1: The zombie apocalypse just broke out and you must survive until rescue arrives. There will be 3 waves of zombies in which each wave has their own unique traits. The 1st wave of zombies walk around aimlessly, the 2nd wave follow you around but are slow, and the last wave is able to run but doesn't follow you. Surviving for 30 seconds will allow you to advance to the next chapter.
 
-Chapter 2:Oh no! You have been bitten by a zombie. Fear not as there is a cure. Make it through the dungeon and collect all the ingredients for the cure but beware of obstacles and zombies. You have 30 seconds to collect all the items or it's game over.
+Chapter 2: Oh no! You have been bitten by a zombie. Fear not as there is a cure. Make it through the dungeon and collect all the ingredients for the cure but beware of obstacles and zombies. You have 30 seconds to collect all the items or it's game over.
 
 Chapter 3: You are to defend the base from incoming zombies by shooting them. You have one life and one life only. If a zombie were to reach your base, it is gameover. You will have to defend the base for 30 seconds. When the timer hits zero, you will have the ability to advance to the next chapter.
 
