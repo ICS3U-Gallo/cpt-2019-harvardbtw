@@ -24,8 +24,10 @@ class StartScreen(arcade.View):
         x1 = settings.WIDTH/2
         y1 = settings.HEIGHT/2
 
-        arcade.draw_text(title, x1, y1, arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text(text, settings.WIDTH/2, settings.HEIGHT/2-75, arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text(title, x1, y1, arcade.color.BLACK,
+                         font_size=50, anchor_x="center")
+        arcade.draw_text(text, settings.WIDTH/2, settings.HEIGHT/2-75,
+                         arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         instructions_view = InstructionView()
@@ -44,32 +46,58 @@ class InstructionView(arcade.View):
         text_colour = arcade.color.BLACK
 
         # Instructions for the game
-        text_1 = "A Zombie Apocalypse has just broke out and you must survive from the incoming zombies"
+        text_1 = "A Zombie Apocalypse has just broke out and " \
+                 "you must survive from the incoming zombies"
+
         text_2 = "until rescue arrives."
-        text_3 = "You have 30 seconds to dodge 3 waves of zombies that spawn at the top of the screen."
-        text_4 = "The 1st wave are regular zombies that walk around aimlessly."
-        text_5 = "The 2nd wave of zombies are slow, but able to follow you around."
-        text_6 = "The 3rd and final wave of zombies are fast but can't follow you like the previous wave."
-        text_7 = "While you are being attacked by zombies, collect as many coins as you can to increase score"
+
+        text_3 = "You have 30 seconds to dodge 3 waves of zombies" \
+                 " that spawn at the top of the screen."
+
+        text_4 = "The 1st wave are regular zombies that walk" \
+                 " around aimlessly."
+
+        text_5 = "The 2nd wave of zombies are slow," \
+                 " but able to follow you around."
+
+        text_6 = "The 3rd and final wave of zombies are fast" \
+                 " but can't follow you like the previous wave."
+
+        text_7 = "While you are being attacked by zombies," \
+                 " collect as many coins as you can to increase score"
+
         text_8 = "W = Player moves up"
         text_9 = "S = Player moves down"
         text_10 = "A = Player moves left"
         text_11 = "D = Player moves right"
         text_12 = "Use WASD to move"
 
-        arcade.draw_text(text_1, 750, settings.HEIGHT - 50, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_2, 180, settings.HEIGHT - 100, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_3, 720, settings.HEIGHT - 150, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_4, 520, settings.HEIGHT - 200, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_5, 550, settings.HEIGHT - 250, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_6, 720, settings.HEIGHT - 300, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_7, 770, settings.HEIGHT - 350, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_12, 200, settings.HEIGHT - 380, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_8, 210, settings.HEIGHT - 410, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_9, 225, settings.HEIGHT - 440, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_10, 208, settings.HEIGHT - 470, text_colour, font_size, anchor_x="right")
-        arcade.draw_text(text_11, 210, settings.HEIGHT - 500, text_colour, font_size, anchor_x="right")
-        arcade.draw_text("Press Enter to play", settings.WIDTH/2, 50, arcade.color.GRAY, font_size=30, anchor_x="center")
+        arcade.draw_text(text_1, 750, settings.HEIGHT - 50, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_2, 180, settings.HEIGHT - 100, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_3, 720, settings.HEIGHT - 150, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_4, 520, settings.HEIGHT - 200, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_5, 550, settings.HEIGHT - 250, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_6, 720, settings.HEIGHT - 300, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_7, 770, settings.HEIGHT - 350, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_12, 200, settings.HEIGHT - 380, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_8, 210, settings.HEIGHT - 410, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_9, 225, settings.HEIGHT - 440, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_10, 208, settings.HEIGHT - 470, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text(text_11, 210, settings.HEIGHT - 500, text_colour,
+                         font_size, anchor_x="right")
+        arcade.draw_text("Press Enter to play", settings.WIDTH/2, 50,
+                         arcade.color.GRAY, font_size=30, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ENTER:
@@ -82,7 +110,8 @@ class InstructionView(arcade.View):
 class Coin(arcade.Sprite):
     def draw(self):
         # sets the coin position to a random location on the screen
-        self.center_y = random.randrange(settings.HEIGHT + 20, settings.HEIGHT + 100)
+        self.center_y = random.randrange(settings.HEIGHT + 20,
+                                         settings.HEIGHT + 100)
         self.center_x = random.randrange(settings.WIDTH)
 
 
@@ -103,7 +132,9 @@ class Level1Zombie(arcade.Sprite):
         main_path = ":resources:images/animated_characters/zombie/zombie"
 
         # Loads textures for idle image
-        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+        self.idle_texture_pair = load_texture_pair("{}_idle.png"
+                                                   .format(main_path))
+        self.updates = settings.UPDATES_PER_FRAME
 
         # Loads textures for walking image
         self.walk_textures = []
@@ -116,23 +147,28 @@ class Level1Zombie(arcade.Sprite):
         self.center_y += self.change_y
 
         # Determines which direction to flip image in
-        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+        if self.change_x < 0 and \
+                self.zombie_face_direction == settings.RIGHT_FACING:
             self.zombie_face_direction = settings.LEFT_FACING
-        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+        elif self.change_x > 0 \
+                and self.zombie_face_direction == settings.LEFT_FACING:
             self.zombie_face_direction = settings.RIGHT_FACING
 
         # Idle animation
         if self.change_x == 0 and self.change_y == 0:
-            self.texture = self.idle_texture_pair[self.zombie_face_direction]
+            self.texture = self.idle_texture_pair[
+                self.zombie_face_direction]
             return
 
         # Walking animation
         self.current_texture += 1
         if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
             self.current_texture = 0
-        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
+        self.texture = self.walk_textures[self.current_texture //
+                                          self.updates][
+            self.zombie_face_direction]
 
-        # Makes the image go in the opposite direction if it reaches the screen border
+        # Creates border for image
         if self.center_x > settings.WIDTH or self.center_x < 0:
             self.change_x = -self.change_x
 
@@ -151,7 +187,8 @@ class Level2Zombie(arcade.Sprite):
 
         main_path = ":resources:images/animated_characters/zombie/zombie"
 
-        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+        self.idle_texture_pair = load_texture_pair(
+            "{}_idle.png".format(main_path))
 
         self.walk_textures = []
         for i in range(8):
@@ -181,21 +218,26 @@ class Level2Zombie(arcade.Sprite):
         self.change_y = math.sin(angle) * settings.LEVEL2_ZOMBIE_SPEED
 
         # Determines direction to face in
-        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+        if self.change_x < 0 and \
+                self.zombie_face_direction == settings.RIGHT_FACING:
             self.zombie_face_direction = settings.LEFT_FACING
-        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+        elif self.change_x > 0 and \
+                self.zombie_face_direction == settings.LEFT_FACING:
             self.zombie_face_direction = settings.RIGHT_FACING
 
         # Idle animation
         if self.change_x == 0 and self.change_y == 0:
-            self.texture = self.idle_texture_pair[self.zombie_face_direction]
+            self.texture = self.idle_texture_pair[
+                self.zombie_face_direction]
             return
 
         # Walking animation
         self.current_texture += 1
         if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
             self.current_texture = 0
-        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
+        self.texture = self.walk_textures[
+            self.current_texture // settings.UPDATES_PER_FRAME][
+            self.zombie_face_direction]
 
         if self.center_x > settings.WIDTH or self.center_x < 0:
             self.change_x = -self.change_x
@@ -215,7 +257,8 @@ class Level3Zombie(arcade.Sprite):
 
         main_path = ":resources:images/animated_characters/zombie/zombie"
 
-        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+        self.idle_texture_pair = load_texture_pair(
+            "{}_idle.png".format(main_path))
 
         self.walk_textures = []
         for i in range(8):
@@ -227,9 +270,11 @@ class Level3Zombie(arcade.Sprite):
         self.center_y += self.change_y
 
         # Determines direction to face
-        if self.change_x < 0 and self.zombie_face_direction == settings.RIGHT_FACING:
+        if self.change_x < 0 and \
+                self.zombie_face_direction == settings.RIGHT_FACING:
             self.zombie_face_direction = settings.LEFT_FACING
-        elif self.change_x > 0 and self.zombie_face_direction == settings.LEFT_FACING:
+        elif self.change_x > 0 and \
+                self.zombie_face_direction == settings.LEFT_FACING:
             self.zombie_face_direction = settings.RIGHT_FACING
 
         # Idle animation
@@ -241,7 +286,9 @@ class Level3Zombie(arcade.Sprite):
         self.current_texture += 1
         if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
             self.current_texture = 0
-        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.zombie_face_direction]
+        self.texture = self.walk_textures[
+            self.current_texture // settings.UPDATES_PER_FRAME][
+            self.zombie_face_direction]
 
         if self.center_x > settings.WIDTH or self.center_x < 0:
             self.change_x = -self.change_x
@@ -258,9 +305,11 @@ class Player(arcade.Sprite):
 
         self.points = [[-22, -64], [22, -64], [22, 28], [-22, 28]]
 
-        main_path = ":resources:images/animated_characters/male_person/malePerson"
+        main_path = ":resources:images/" \
+                    "animated_characters/male_person/malePerson"
 
-        self.idle_texture_pair = load_texture_pair("{}_idle.png".format(main_path))
+        self.idle_texture_pair = load_texture_pair(
+            "{}_idle.png".format(main_path))
 
         self.walk_textures = []
 
@@ -282,10 +331,12 @@ class Player(arcade.Sprite):
             self.top = settings.HEIGHT - 1
 
         # Determines direction to face in
-        if self.change_x < 0 and self.player_face_direction == settings.RIGHT_FACING:
+        if self.change_x < 0 and \
+                self.player_face_direction == settings.RIGHT_FACING:
             self.player_face_direction = settings.LEFT_FACING
 
-        elif self.change_x > 0 and self.player_face_direction == settings.LEFT_FACING:
+        elif self.change_x > 0 and \
+                self.player_face_direction == settings.LEFT_FACING:
             self.player_face_direction = settings.RIGHT_FACING
 
         # Idle animation
@@ -297,7 +348,9 @@ class Player(arcade.Sprite):
         self.current_texture += 1
         if self.current_texture > 7 * settings.UPDATES_PER_FRAME:
             self.current_texture = 0
-        self.texture = self.walk_textures[self.current_texture // settings.UPDATES_PER_FRAME][self.player_face_direction]
+        self.texture = self.walk_textures[
+            self.current_texture // settings.UPDATES_PER_FRAME][
+            self.player_face_direction]
 
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -309,7 +362,7 @@ class Chapter1View(arcade.View):
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
         # Creates game timer and sets it to 30 seconds
-        self.time = 30.00
+        self.time = 3
 
         # Creates score counter
         self.score = 0
@@ -367,7 +420,8 @@ class Chapter1View(arcade.View):
 
         # Creates the coins
         for coin in range(settings.COIN_COUNT):
-            coin = Coin("Chapter1_Images\coin.png", settings.SPRITE_SCALING_COIN)
+            coin = Coin("Chapter1_Images\coin.png",
+                        settings.SPRITE_SCALING_COIN)
             coin.center_x = random.randrange(settings.WIDTH)
             coin.center_y = random.randrange(settings.HEIGHT)
 
@@ -390,8 +444,8 @@ class Chapter1View(arcade.View):
             self.level3_zombies.draw()
 
         # Draws time remaining and total score
-        arcade.draw_text(time_output, settings.WIDTH - 175, settings.HEIGHT - 30,  arcade.color.BLACK, 24)
-        arcade.draw_text(score_output, settings.WIDTH - 790, settings.HEIGHT - 30, arcade.color.BLACK, 24)
+        arcade.draw_text(time_output, 625, 570,  arcade.color.BLACK, 24)
+        arcade.draw_text(score_output, 10, 570, arcade.color.BLACK, 24)
 
     def update(self, delta_time):
         # Decreases timer by 1 until it reaches 0
@@ -413,7 +467,8 @@ class Chapter1View(arcade.View):
         self.level3_zombies.update()
 
         # Checks if player collides with a coin
-        hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_sprite_list)
+        hit_list = arcade.check_for_collision_with_list(
+            self.player_sprite, self.coin_sprite_list)
 
         # If player collides with coin, increase score by 1
         for coin in hit_list:
@@ -422,8 +477,8 @@ class Chapter1View(arcade.View):
 
         # Checks for player collision with level 1 zombies
         for level1_zombie in self.level1_zombies:
-            player_in_contact = level1_zombie.collides_with_list(self.player_list)
-            if player_in_contact:
+            player_hit = level1_zombie.collides_with_list(self.player_list)
+            if player_hit:
                 game_over_view = GameOverView()
                 game_over_view.director = self.director
                 game_over_view.score = self.score
@@ -435,8 +490,8 @@ class Chapter1View(arcade.View):
                 level2_zombie.follow_player(self.player_sprite)
 
             for zombie in self.level2_zombies:
-                player_in_contact = zombie.collides_with_list(self.player_list)
-                if player_in_contact:
+                player_hit = zombie.collides_with_list(self.player_list)
+                if player_hit:
                     game_over_view = GameOverView()
                     game_over_view.director = self.director
                     game_over_view.score = self.score
@@ -445,8 +500,8 @@ class Chapter1View(arcade.View):
         # Checks for player collision with level 3 zombies
         if self.time <= 10:
             for level3_zombie in self.level3_zombies:
-                player_in_contact = level3_zombie.collides_with_list(self.player_list)
-                if player_in_contact:
+                player_hit = level3_zombie.collides_with_list(self.player_list)
+                if player_hit:
                     game_over_view = GameOverView()
                     game_over_view.director = self.director
                     game_over_view.score = self.score
@@ -487,8 +542,10 @@ class GameWinView(arcade.View):
 
         arcade.draw_text(text_1, 80, 400, arcade.color.BLACK, 28)
         arcade.draw_text(text_2, 80, 350, arcade.color.BLACK, 28)
-        arcade.draw_text(text_3, settings.WIDTH/2, 80, arcade.color.BLACK, 24, anchor_x="center")
-        arcade.draw_text(text_4, settings.WIDTH/2, 280, arcade.color.BLACK, 24, anchor_x="center")
+        arcade.draw_text(text_3, 400, 80,
+                         arcade.color.BLACK, 24, anchor_x="center")
+        arcade.draw_text(text_4, 400, 280,
+                         arcade.color.BLACK, 24, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         # If player presses space, advance to the next chapter
@@ -510,7 +567,8 @@ class GameOverView(arcade.View):
         text_3 = "Click to restart"
 
         arcade.draw_text(text_1, 50, 400, arcade.color.BLACK, 34)
-        arcade.draw_text(text_2, settings.WIDTH/2, 300, arcade.color.BLACK, 34, anchor_x="center")
+        arcade.draw_text(text_2, 400, 300,
+                         arcade.color.BLACK, 34, anchor_x="center")
         arcade.draw_text(text_3, 310, 200, arcade.color.BLACK, 24)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
