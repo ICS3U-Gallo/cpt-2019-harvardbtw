@@ -36,10 +36,11 @@ class StoryView(arcade.View):
                          arcade.color.WHITE, font_size=50, anchor_x="center")
         arcade.draw_text("Click to advance", WIDTH / 2, 470,
                          arcade.color.GRAY, font_size=20, anchor_x="center")
-        arcade.draw_text("You have been infected and have 30 seconds to live!", 50, HEIGHT / 2 + 100,
-                         arcade.color.WHITE, font_size=20)
-        arcade.draw_text("Collect all the ingredients to cure yourself!", 50, HEIGHT / 2,
-                         arcade.color.WHITE, font_size=20)
+        arcade.draw_text("You have been infected and have 30 seconds to live!",
+                         50, HEIGHT / 2 + 100, arcade.color.WHITE, font_size=20
+                         )
+        arcade.draw_text("Collect all the ingredients to cure yourself!", 50,
+                         HEIGHT / 2, arcade.color.WHITE, font_size=20)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         instructions_view = InstructionView()
@@ -109,12 +110,13 @@ class InstructionView(arcade.View):
                          arcade.color.GRAY, font_size=20, anchor_x="center")
         arcade.draw_text("Your task is to collect these:", 50, HEIGHT / 2,
                          arcade.color.WHITE, font_size=20)
-        arcade.draw_text("Touching these will result in instadeath:", 50, HEIGHT / 2 - 100,
-                         arcade.color.WHITE, font_size=20)
-        arcade.draw_text("Use W to jump, A to move left, D to move right", 50, HEIGHT / 2 + 100,
-                         arcade.color.WHITE, font_size=20)
-        arcade.draw_text("Use the mouse and aim and destroy to the zombie:", 50, HEIGHT / 2 - 200,
-                         arcade.color.WHITE, font_size=20)
+        arcade.draw_text("Touching these will result in instadeath:", 50,
+                         HEIGHT / 2 - 100, arcade.color.WHITE, font_size=20)
+        arcade.draw_text("Use W to jump, A to move left, D to move right", 50,
+                         HEIGHT / 2 + 100, arcade.color.WHITE, font_size=20)
+        arcade.draw_text("Use the mouse and aim and destroy to the zombie:",
+                         50, HEIGHT / 2 - 200, arcade.color.WHITE, font_size=20
+                         )
 
         self.item_list.draw()
 
@@ -161,7 +163,8 @@ class GameOverView(arcade.View):
         arcade.start_render()
         arcade.draw_text("Game Over", 240, 400, arcade.color.BLACK, 54)
         arcade.draw_text("Click to restart", 310, 300, arcade.color.BLACK, 24)
-        arcade.draw_text("Click to SPACE for next minigame", 200, 200, arcade.color.BLACK, 24)
+        arcade.draw_text("Click to SPACE for next minigame", 200, 200,
+                         arcade.color.BLACK, 24)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = Chapter2View()
@@ -221,9 +224,9 @@ class Chapter2View(arcade.View):
         self.player_bullet_list = arcade.SpriteList()
         self.enemy_bullet_list = arcade.SpriteList()
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.wall_list, GRAVITY,
-                                                             ladders=self.ladder_list)
-
+        self.physics_engine = \
+            arcade.PhysicsEnginePlatformer(self.player, self.wall_list,
+                                           GRAVITY, ladders=self.ladder_list)
         self.boulder = Boulder("Chapter 2 Sprites/boulder.png", 0.03)
         self.boulder.angle = random.randrange(360)
         self.boulder.change_angle = random.randrange(-10, 10)
@@ -232,7 +235,8 @@ class Chapter2View(arcade.View):
         self.zombie = arcade.Sprite("Chapter 2 Sprites/zombie.png", 0.3)
         self.zombie_health = 12
         self.water_gun = arcade.Sprite("Chapter 2 Sprites/raygun.png", 0.15)
-        self.background = arcade.Sprite("Chapter 2 Sprites/background.jpg", 1, center_y=500, center_x=500, )
+        self.background = arcade.Sprite("Chapter 2 Sprites/background.jpg", 1,
+                                        center_y=500, center_x=500)
 
     def on_draw(self):
         arcade.start_render()
@@ -242,7 +246,8 @@ class Chapter2View(arcade.View):
         minutes = int(self.time) // 60
         seconds = int(self.time) % 60
         output = ("Time: {}: {}".format(minutes, seconds))
-        arcade.draw_text(output, WIDTH - 175, HEIGHT - 30, arcade.color.BLACK, 24)
+        arcade.draw_text(output, WIDTH - 175, HEIGHT - 30, arcade.color.BLACK,
+                         24)
 
         self.player.draw()
         self.item_list.draw()
@@ -406,16 +411,20 @@ class Chapter2View(arcade.View):
             self.window.show_view(game_win)
 
     def collisions(self):
-        item_hit_list = arcade.check_for_collision_with_list(self.player, self.item_list)
+        item_hit_list = arcade.check_for_collision_with_list(self.player,
+                                                             self.item_list)
         for item in item_hit_list:
             self.item_list.remove(item)
 
-        if arcade.check_for_collision_with_list(self.player, self.death_list) or self.time < 0:
+        if arcade.check_for_collision_with_list(
+                self.player, self.death_list) or self.time < 0:
             game_over_view = GameOverView()
             game_over_view.director = self.director
             self.window.show_view(game_over_view)
 
-        zombie_hit = arcade.check_for_collision_with_list(self.zombie, self.player_bullet_list)
+        zombie_hit = arcade.check_for_collision_with_list(
+            self.zombie,
+            self.player_bullet_list)
         if zombie_hit:
             self.zombie_health -= 1
         for item in zombie_hit:
