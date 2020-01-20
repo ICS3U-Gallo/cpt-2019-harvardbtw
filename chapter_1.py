@@ -309,7 +309,7 @@ class Chapter1View(arcade.View):
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
         # Creates game timer and sets it to 30 seconds
-        self.time = 1
+        self.time = 5
 
         # Creates score counter
         self.score = 0
@@ -425,6 +425,7 @@ class Chapter1View(arcade.View):
             player_in_contact = level1_zombie.collides_with_list(self.player_list)
             if player_in_contact:
                 game_over_view = GameOverView()
+                game_over_view.director = self.director
                 game_over_view.score = self.score
                 self.window.show_view(game_over_view)
 
@@ -437,6 +438,7 @@ class Chapter1View(arcade.View):
                 player_in_contact = zombie.collides_with_list(self.player_list)
                 if player_in_contact:
                     game_over_view = GameOverView()
+                    game_over_view.director = self.director
                     game_over_view.score = self.score
                     self.window.show_view(game_over_view)
 
@@ -446,6 +448,7 @@ class Chapter1View(arcade.View):
                 player_in_contact = level3_zombie.collides_with_list(self.player_list)
                 if player_in_contact:
                     game_over_view = GameOverView()
+                    game_over_view.director = self.director
                     game_over_view.score = self.score
                     self.window.show_view(game_over_view)
 
@@ -513,6 +516,7 @@ class GameOverView(arcade.View):
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         # If player clicks the screen, restart the game
         game_view = Chapter1View()
+        game_view.director = self.director
         self.window.show_view(game_view)
 
 
