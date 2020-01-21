@@ -84,7 +84,7 @@ class InstructionView(arcade.View):
         boulder.center_y = 200
 
         bullet = arcade.Sprite("Chapter 2 Sprites/bullet2.png", 0.3)
-        bullet.center_x = 700
+        bullet.center_x = 650
         bullet.center_y = 200
 
         zombie = arcade.Sprite("Chapter 2 Sprites/zombie.png", 0.3)
@@ -92,8 +92,12 @@ class InstructionView(arcade.View):
         zombie.center_y = 200
 
         gun = arcade.Sprite("Chapter 2 Sprites/raygun.png", 0.2)
-        gun.center_x = 600
-        gun.center_y = 100
+        gun.center_x = 575
+        gun.center_y = HEIGHT / 2 + 10
+
+        platform = arcade.Sprite("Chapter 2 Sprites/platform.png", 0.3)
+        platform.center_x = 600
+        platform.center_y = 150
 
         self.item_list.append(zombie_blood)
         self.item_list.append(antibiotic)
@@ -104,6 +108,7 @@ class InstructionView(arcade.View):
         self.item_list.append(bullet)
         self.item_list.append(zombie)
         self.item_list.append(gun)
+        self.item_list.append(platform)
 
     def on_draw(self):
         arcade.start_render()
@@ -117,7 +122,7 @@ class InstructionView(arcade.View):
                          HEIGHT / 2 - 100, arcade.color.WHITE, font_size=20)
         arcade.draw_text("Use W to jump, A to move left, D to move right", 50,
                          HEIGHT / 2 + 100, arcade.color.WHITE, font_size=20)
-        arcade.draw_text("Use the mouse and aim and destroy to the zombie:",
+        arcade.draw_text("Use the mouse and aim and destroy to the zombie",
                          50, HEIGHT / 2 - 200, arcade.color.WHITE, font_size=20
                          )
 
@@ -259,7 +264,10 @@ class Chapter2View(arcade.View):
         output = ("Time: {}: {}".format(minutes, seconds))
         arcade.draw_text(output, WIDTH - 175, HEIGHT - 30, arcade.color.BLACK,
                          24)
-
+        if self.zombie in self.death_list:
+            zombie_health = "Zombie Health: {}".format(self.zombie_health)
+            arcade.draw_text(zombie_health, 50, HEIGHT - 30, arcade.color.WHITE,
+                             24)
         # Draw all sprites
         self.player.draw()
         self.item_list.draw()
@@ -275,7 +283,7 @@ class Chapter2View(arcade.View):
         if key == arcade.key.W:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
-            self.up_pressed = True
+                self.up_pressed = True
         elif key == arcade.key.S:
             self.down_pressed = True
         elif key == arcade.key.A:
@@ -362,15 +370,15 @@ class Chapter2View(arcade.View):
                     wall.center_y = y
                     self.wall_list.append(wall)
 
-        for y in range(90, 391, 300):
-            ladder = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.30)
+        for y in range(60, 361, 300):
+            ladder = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.25)
             ladder.center_x = 784
             ladder.center_y = y
             self.ladder_list.append(ladder)
 
-        ladder_2 = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.30)
+        ladder_2 = arcade.Sprite("Chapter 2 Sprites/ladder.png", 0.25)
         ladder_2.center_x = 16
-        ladder_2.center_y = 240
+        ladder_2.center_y = 210
         self.ladder_list.append(ladder_2)
 
     def obstacles(self):
@@ -478,10 +486,9 @@ class Chapter2View(arcade.View):
 
 if __name__ == "__main__":
     from utils import FakeDirector
+
     window = arcade.Window(WIDTH, HEIGHT)
     my_view = Start()
     my_view.director = FakeDirector(close_on_next_view=True)
     window.show_view(my_view)
     arcade.run()
-
-
