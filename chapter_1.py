@@ -420,7 +420,7 @@ class Chapter1View(arcade.View):
 
         # Creates the coins
         for coin in range(settings.COIN_COUNT):
-            coin = Coin("Chapter1_Images\coin.png",
+            coin = Coin("Chapter1_Images/coin.png",
                         settings.SPRITE_SCALING_COIN)
             coin.center_x = random.randrange(settings.WIDTH)
             coin.center_y = random.randrange(settings.HEIGHT)
