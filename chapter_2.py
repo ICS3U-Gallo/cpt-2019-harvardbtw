@@ -95,7 +95,7 @@ class InstructionView(arcade.View):
         gun.center_x = 575
         gun.center_y = HEIGHT / 2 + 10
 
-        platform = arcade.Sprite("Chapter 2 Sprites/platform.png", 0.3)
+        platform = arcade.Sprite("Chapter 2 Sprites/Platform.png", 0.3)
         platform.center_x = 600
         platform.center_y = 150
 
