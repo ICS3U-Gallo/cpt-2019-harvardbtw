@@ -5,7 +5,7 @@ Chapter 2: Oh no! You have been bitten by a zombie. Fear not as there is a cure.
 
 Chapter 3: You are to defend the base from incoming zombies by shooting them. You have one life and one life only. If a zombie were to reach your base, it is gameover. You will have to defend the base for 30 seconds. When the timer hits zero, you will have the ability to advance to the next chapter.
 
-Chapter 4: 
+Chapter 4: You manage to defend the base against the zombies, but now you have to head outside the facility you are in to meet up with the rescue squad sent to save you. Unfortunately, on the way there, you find yourself staring down a mutated zombie...
 
 ### Group Members:
 - Danny Lu
