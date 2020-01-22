@@ -74,8 +74,8 @@ class Zombie:
         #spritelist and images
         self.boltlist = arcade.SpriteList(use_spatial_hash=False)
         self.zombie_sprite_1 = arcade.Sprite('Chapter4_Images/ZombLVL1.png', 0.75)
-        self.zombie_sprite_2 = arcade.Sprite('Chapter4_Images/ZombLVL2.png', 0.75)
-        self.zombie_sprite_3 = arcade.Sprite('Chapter4_Images/ZombLVL3.png', 0.75)
+        self.zombie_sprite_2 = arcade.Sprite('Chapter4_Images/ZombLVl2.png', 0.75)
+        self.zombie_sprite_3 = arcade.Sprite('Chapter4_Images/ZombLVl3.png', 0.75)
 
     def restart(self):
         #same thing as the restart function in the player class, but for this one
